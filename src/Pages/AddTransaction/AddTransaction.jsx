@@ -6,7 +6,7 @@ import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
 
 const AddTransaction = () => {
     const { user } = useContext(AuthContext);
-    const axiosSecure = UseAxiosSecure;
+    const axiosSecure = UseAxiosSecure();
 
     const handleAddTransaction = async (e) => {
         e.preventDefault();
@@ -33,8 +33,7 @@ const AddTransaction = () => {
         };
         console.log(newTransaction);
 
-        axiosSecure
-            .post("/transactions", newTransaction)
+        axiosSecure.post("/transactions", newTransaction)
             .then((data) => {
                 console.log(data);
                 if (data.data.insertedId) {

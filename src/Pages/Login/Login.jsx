@@ -4,12 +4,13 @@ import { IoEyeOffSharp } from 'react-icons/io5';
 import { Link, useLocation, useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../Provider/AuthContext/AuthContext';
+import UseAxiosSecure from '../../Hooks/UseAxiosSecure/UseAxiosSecure';
 
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("")
-
+    const axiosSecure = UseAxiosSecure();
     const emailRef = useRef()
 
     const { signInUser, signInWithGoogle, forgetPassword } = use(AuthContext)
@@ -31,6 +32,20 @@ const Login = () => {
                 event.target.reset()
                 toast.success("Successfully Login")
                 navigate(location.state || '/')
+
+                const newUser = {
+                    name: user.displayName || "Anonymous",
+                    email: user.email,
+                    photoURL: user.photoURL || null,
+                }
+                axiosSecure.post("/users", newUser)
+                    .then(res => {
+                        console.log("Response Here", res)
+                    })
+                    .catch(err => {
+                        console.log("Error here", err)
+                    })
+
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -39,9 +54,23 @@ const Login = () => {
     }
     const handleLoginWithGoogle = () => {
         signInWithGoogle()
-            .then(() => {
+            .then((result) => {
                 // console.log(result)
+                const user = result.user
                 navigate(location.state || '/')
+
+                const newUser = {
+                    name: user.displayName || "Anonymous",
+                    email: user.email,
+                    photoURL: user.photoURL || null,
+                }
+                axiosSecure.post("/users", newUser)
+                    .then(res => {
+                        console.log("Response Here for Google", res)
+                    })
+                    .catch(err => {
+                        console.log("Error here for Google", err)
+                    })
             })
             .catch(error => {
                 // console.log(error)
