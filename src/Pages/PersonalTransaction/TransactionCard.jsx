@@ -1,13 +1,13 @@
 import React from "react";
 import { toast } from "react-hot-toast";
-import axios from "axios";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
-import CardIMG from '../../assets/isaac-lind-G7tygfMolGk-unsplash.jpg'
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
+
 
 const TransactionCard = ({ transaction, onDelete }) => {
     const navigate = useNavigate();
-
+    const axiosSecure = UseAxiosSecure();
     const handleDelete = () => {
         Swal.fire({
             title: "Are you sure?",
@@ -19,12 +19,10 @@ const TransactionCard = ({ transaction, onDelete }) => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                axios
-                    .delete(`http://localhost:5000/transactions/${transaction._id}`)
+                axiosSecure
+                    .delete(`/transactions/${transaction._id}`)
                     .then(() => {
                         Swal.fire("Deleted!", "Transaction deleted successfully.", "success");
-                        toast.success("Transaction deleted successfully");
-                        // ✅ UI instantly update (no reload)
                         onDelete(transaction._id);
                     })
                     .catch(() => {
@@ -35,45 +33,48 @@ const TransactionCard = ({ transaction, onDelete }) => {
     };
 
     return (
-        <div className="border rounded-lg p-4 shadow hover:shadow-lg transition">
-            <p>
-                <strong>Type:</strong>{" "}
-                <span
-                    className={
-                        transaction.type === "income" ? "text-green-600" : "text-red-600"
-                    }
-                >
-                    {transaction.type}
-                </span>
-            </p>
-            <p>
-                <strong>Category:</strong> {transaction.category}
-            </p>
-            <p>
-                <strong>Amount:</strong> ${transaction.amount}
-            </p>
-            <p>
-                <strong>Date:</strong> {new Date(transaction.date).toLocaleDateString()}
-            </p>
-            <div className="flex gap-2 mt-3">
-                <button
-                    onClick={() => navigate(`/transaction/update/${transaction._id}`)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                >
-                    Update
-                </button>
-                <button
-                    onClick={handleDelete}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                >
-                    Delete
-                </button>
-                <button
-                    onClick={() => navigate(`/transaction/${transaction._id}`)}
-                    className="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600"
-                >
-                    View Details
-                </button>
+        <div className="relative border-2 border-primary rounded-xl bg-black/50 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 w-full max-w-md mx-auto">
+            <div className="p-6 text-neutral flex flex-col gap-3">
+                <p className="text-lg">
+                    <strong className="text-secondary">Type:</strong>{" "}
+                    <span
+                        className={
+                            transaction.type === "income" ? "text-red-500" : "text-green-500"
+                        }
+                    >
+                        {transaction.type}
+                    </span>
+                </p>
+                <p className="text-lg text-white">
+                    <strong className="text-secondary">Category:</strong> {transaction.category} 
+                </p>
+                <p className="text-lg text-white">
+                    <strong className="text-secondary">Amount:</strong> ${transaction.amount}
+                </p>
+                <p className="text-lg text-white">
+                    <strong className="text-secondary">Date:</strong> {new Date(transaction.date).toLocaleDateString()}
+                </p>
+
+                <div className="flex gap-3 mt-4">
+                    <button
+                        // onClick={() => navigate(`/transaction/update/${transaction._id}`)}
+                        className="bg-blue-500/90 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition"
+                    >
+                        Update
+                    </button>
+                    <button
+                        onClick={handleDelete}
+                        className="bg-red-500/90 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition"
+                    >
+                        Delete
+                    </button>
+                    <button
+                        onClick={() => navigate(`/transaction/${transaction._id}`)}
+                        className="bg-gray-500/90 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium transition"
+                    >
+                        View Details
+                    </button>
+                </div>
             </div>
         </div>
     );
