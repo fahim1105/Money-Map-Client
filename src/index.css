@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Domine:wght@400..700&display=swap');@import "tailwindcss";
+@plugin "daisyui";
+
+@plugin "daisyui/theme" {
+  name: "finEase";
+  default: true;
+
+  /* 🌿 Brand & Core */
+  --color-primary: #708238;     /* → Olive Green (main brand color: use for navbar background, buttons, highlights) */
+  --color-secondary: #A3B18A;   /* → Light Olive for accents, hover states, or highlights */
+  --color-accent: #D4A373;      /* → Warm beige accent (for CTA icons, subtle highlights) */
+
+  /* 🎨 Backgrounds */
+  --color-base-100: #F9FAF8;    /* → Page background (off-white, slightly warm) */
+  --color-base-200: #FFFFFF;    /* → Card or section background */
+  --color-base-300: #E5E7EB;    /* → Border, divider, or muted background */
+
+  /* 📝 Text Colors */
+  --color-neutral: #1A1A1A;         /* → Primary text (dark neutral for readability) */
+
+  /* ⚡ Status Colors */
+  --color-info: #3B82F6;       /* → Info Blue (default) */
+  --color-success: #4CAF50;    /* → Fresh Green (success) */
+  --color-warning: #EAB308;    /* → Golden Yellow (warning) */
+  --color-error: #DC2626;      /* → Deep Red (error) */
+
+  /* 🧈 Gradient Button */
+  --btn-gradient: linear-gradient(90deg, #708238 0%, #A3B18A 100%);
+  /* → Gradient from deep olive to light olive for CTA buttons (e.g., Login button) */
+}
+
+
+
+*{
+  font-family: "Domine", serif;
+  font-optical-sizing: auto;
+  /* font-weight: <weight>; */
+  font-style: normal;
+}
