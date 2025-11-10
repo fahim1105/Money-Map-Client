@@ -22,25 +22,25 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 Component: Home
+            },
+            {
+                path: "/add-transition",
+                element: <PrivetRoute><AddTransaction></AddTransaction></PrivetRoute>
+            },
+            {
+                path: "/my-transition",
+                element: <PrivetRoute><PersonalTransaction></PersonalTransaction></PrivetRoute>
+            },
+            {
+                path: "/reports",
+                element: <PrivetRoute><Reports></Reports></PrivetRoute>
+            },
+            {
+                path: "/my-profile",
+                element: <PrivetRoute><Profile></Profile></PrivetRoute>
             }
 
         ]
-    },
-    {
-        path: "/add-transition",
-        element: <PrivetRoute><AddTransaction></AddTransaction></PrivetRoute>
-    },
-    {
-        path: "/my-transition",
-        element: <PrivetRoute><PersonalTransaction></PersonalTransaction></PrivetRoute>
-    },
-    {
-        path: "/reports",
-        element: <PrivetRoute><Reports></Reports></PrivetRoute>
-    },
-    {
-        path:"/my-profile",
-        element:<PrivetRoute><Profile></Profile></PrivetRoute>
     },
     {
         path: "/auth",

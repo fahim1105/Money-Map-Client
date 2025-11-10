@@ -2,7 +2,6 @@ import React from 'react';
 import Navbar from '../../Component/Navbar/Navbar';
 import { Outlet } from 'react-router';
 import Footer from '../../Component/Footer/Footer';
-import Hero from '../../Component/Hero/Hero';
 import MoneyBG from '../../assets/money-bg.jpg';
 
 const HomeLayout = () => {
@@ -20,7 +19,6 @@ const HomeLayout = () => {
             <div className="relative z-10">
                 <section>
                     <Navbar />
-                    <Hero />
                 </section>
                 <section>
                     <Outlet />
