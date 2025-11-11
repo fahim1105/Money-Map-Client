@@ -3,9 +3,11 @@ import { useLoaderData, Link } from "react-router";
 import { FaArrowLeft, FaMoneyBill, FaUser } from "react-icons/fa";
 import { MdCategory } from "react-icons/md";
 import { FaRegCalendarDays } from "react-icons/fa6";
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
 
 const TransactionDetails = () => {
     const detailsData = useLoaderData();
+    const axiosSecure = UseAxiosSecure();
     const {
         _id: transactionId,
         type,
@@ -23,18 +25,50 @@ const TransactionDetails = () => {
 
     // Fetch total amount for this category for the same user
     useEffect(() => {
-        if (category && email) {
-            fetch(`http://localhost:5000/transactions?email=${email}`)
-                .then((res) => res.json())
-                .then((data) => {
-                    const total = data
-                        .filter((t) => t.category === category)
-                        .reduce((sum, t) => sum + (t.amount || 0), 0);
+        if (email) {
+            // ✅ If category is not provided, total should be 0
+            if (!category) {
+                setTotalCategoryAmount(0);
+                return;
+            }
+
+            axiosSecure
+                .get(`/transactions?email=${email}`)
+                .then((res) => {
+                    const data = res.data;
+
+                    const filtered = data.filter(
+                        (t) =>
+                            t.category?.toLowerCase() === category?.toLowerCase() &&
+                            t.amount != null
+                    );
+
+                    const total = filtered.reduce((sum, t) => sum + Number(t.amount), 0);
                     setTotalCategoryAmount(total);
                 })
-                .catch((err) => console.error(err));
+                .catch((err) =>
+                    console.error("Error fetching category total:", err)
+                );
         }
-    }, [category, email]);
+    }, [category, email, axiosSecure]);
+
+    // useEffect(() => {
+    //     if (category && email) {
+    //         axiosSecure
+    //             .get(`/transactions?email=${email}`)
+    //             .then((res) => {
+    //                 const data = res.data;
+    //                 const total = data
+    //                     .filter((t) => t.category === category)
+    //                     .reduce((sum, t) => sum + (t.amount || 0), 0);
+    //                 setTotalCategoryAmount(total);
+    //             })
+    //             .catch((err) => console.error(err));
+    //     }
+    // }, [category, email, axiosSecure]);
+
+
+
 
     return (
         <div className="min-h-screen bg-base-200 flex flex-col items-center py-10 px-4">
