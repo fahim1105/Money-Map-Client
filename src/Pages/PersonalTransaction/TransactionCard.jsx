@@ -1,6 +1,6 @@
 import React from "react";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
 
@@ -8,6 +8,7 @@ import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
 const TransactionCard = ({ transaction, onDelete }) => {
     const navigate = useNavigate();
     const axiosSecure = UseAxiosSecure();
+
     const handleDelete = () => {
         Swal.fire({
             title: "Are you sure?",
@@ -46,7 +47,7 @@ const TransactionCard = ({ transaction, onDelete }) => {
                     </span>
                 </p>
                 <p className="text-lg text-white">
-                    <strong className="text-secondary">Category:</strong> {transaction.category} 
+                    <strong className="text-secondary">Category:</strong> {transaction.category}
                 </p>
                 <p className="text-lg text-white">
                     <strong className="text-secondary">Amount:</strong> ${transaction.amount}
@@ -57,7 +58,7 @@ const TransactionCard = ({ transaction, onDelete }) => {
 
                 <div className="flex gap-3 mt-4">
                     <button
-                        // onClick={() => navigate(`/transaction/update/${transaction._id}`)}
+                        onClick={() => navigate(`/transaction/update/${transaction._id}`)}
                         className="bg-blue-500/90 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition"
                     >
                         Update
@@ -68,12 +69,14 @@ const TransactionCard = ({ transaction, onDelete }) => {
                     >
                         Delete
                     </button>
-                    <button
-                        onClick={() => navigate(`/transaction/${transaction._id}`)}
-                        className="bg-gray-500/90 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium transition"
-                    >
-                        View Details
-                    </button>
+                    <Link to={`/transaction-details/${transaction._id}`}>
+                        <button
+                            // onClick={() => navigate(`/transaction/${transaction._id}`)}
+                            className="bg-gray-500/90 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium transition"
+                        >
+                            View Details
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>

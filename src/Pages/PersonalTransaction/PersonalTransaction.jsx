@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../Provider/AuthContext/AuthContext";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
 import TransactionCard from "./TransactionCard";
+import Loader from "../../Component/Loader/Loader";
 
 const PersonalTransaction = () => {
     const { user } = useContext(AuthContext);
@@ -30,16 +31,12 @@ const PersonalTransaction = () => {
     };
 
     if (loading) {
-        return (
-            <div className="flex justify-center items-center h-[60vh]">
-                <span className="loading loading-spinner text-4xl"></span>
-            </div>
-        );
+        return <Loader></Loader>;
     }
 
     if (!transactions.length) {
         return (
-            <p className="text-center flex justify-center items-center text-4xl text-base-100">
+            <p className="text-center my-50 flex justify-center items-center text-4xl text-base-100">
                 No transactions found.
             </p>
         );

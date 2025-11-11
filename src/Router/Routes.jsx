@@ -12,6 +12,7 @@ import Reports from '../Pages/Reports/Reports';
 import PrivetRoute from './PrivetRoutes';
 import PersonalTransaction from '../Pages/PersonalTransaction/PersonalTransaction';
 import Profile from '../Pages/Profile/Profile';
+import TransactionDetails from '../Pages/TransactionDetails/TransactionDetails';
 
 export const router = createBrowserRouter([
     {
@@ -30,6 +31,11 @@ export const router = createBrowserRouter([
             {
                 path: "/my-transition",
                 element: <PrivetRoute><PersonalTransaction></PersonalTransaction></PrivetRoute>
+            },
+            {
+                path: "/transaction-details/:id",
+                loader: ({ params }) => fetch(`http://localhost:5000/transactions/${params.id}`),
+                element: <PrivetRoute><TransactionDetails></TransactionDetails></PrivetRoute>
             },
             {
                 path: "/reports",

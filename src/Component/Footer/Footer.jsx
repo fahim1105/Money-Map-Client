@@ -22,9 +22,10 @@ const Footer = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            e.target.reset()
             Swal.fire({
               title: "Subscribed!",
-              text: "Thanks for joining our newsletter.",
+              text: "Thanks for joining our web-app.",
               icon: "success",
               confirmButtonColor: "#2c54f5",
             });

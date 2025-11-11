@@ -33,7 +33,8 @@ const AddTransaction = () => {
         };
         console.log(newTransaction);
 
-        axiosSecure.post("/transactions", newTransaction)
+        axiosSecure
+            .post("/transactions", newTransaction)
             .then((data) => {
                 console.log(data);
                 if (data.data.insertedId) {
@@ -54,6 +55,10 @@ const AddTransaction = () => {
                     confirmButtonColor: "#FCE252",
                 });
             });
+
+    //   const bara =  await axios.post("http://localhost:5000/transactions", newTransaction)
+    //   console.log(bara)
+
     };
 
     return (
