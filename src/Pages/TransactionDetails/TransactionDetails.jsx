@@ -52,24 +52,6 @@ const TransactionDetails = () => {
         }
     }, [category, email, axiosSecure]);
 
-    // useEffect(() => {
-    //     if (category && email) {
-    //         axiosSecure
-    //             .get(`/transactions?email=${email}`)
-    //             .then((res) => {
-    //                 const data = res.data;
-    //                 const total = data
-    //                     .filter((t) => t.category === category)
-    //                     .reduce((sum, t) => sum + (t.amount || 0), 0);
-    //                 setTotalCategoryAmount(total);
-    //             })
-    //             .catch((err) => console.error(err));
-    //     }
-    // }, [category, email, axiosSecure]);
-
-
-
-
     return (
         <div className="min-h-screen bg-base-200 flex flex-col items-center py-10 px-4">
             <div className="w-full max-w-3xl bg-base-100 shadow-lg rounded-2xl p-8 relative">
