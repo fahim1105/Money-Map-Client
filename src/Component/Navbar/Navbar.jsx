@@ -127,13 +127,16 @@ const Navbar = () => {
                     onMouseEnter={() => setShowPopup(true)}
                     onMouseLeave={() => setShowPopup(false)}
                 >
-                    <Link to="/my-profile">
-                        <img
-                            className="w-8 sm:w-10 border-2 border-base-300 rounded-full hover:scale-105 transition-transform cursor-pointer"
-                            src={user?.photoURL || UserIMG}
-                            alt="User"
-                        />
-                    </Link>
+                    {
+                        user &&
+                        <Link to="/my-profile">
+                            <img
+                                className="w-8 sm:w-10 border-2 border-base-300 rounded-full hover:scale-105 transition-transform cursor-pointer"
+                                src={user?.photoURL || UserIMG}
+                                alt="User"
+                            />
+                        </Link>
+                    }
 
                     {/* Popup */}
                     {showPopup && (

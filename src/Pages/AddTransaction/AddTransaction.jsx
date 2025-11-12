@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
 import { AuthContext } from "../../Provider/AuthContext/AuthContext";
@@ -7,6 +7,8 @@ import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
 const AddTransaction = () => {
     const { user } = useContext(AuthContext);
     const axiosSecure = UseAxiosSecure();
+
+    const [selectedType, setSelectedType] = useState("Income"); // track type
 
     const handleAddTransaction = async (e) => {
         e.preventDefault();
@@ -31,12 +33,10 @@ const AddTransaction = () => {
             created_at: new Date().toISOString(),
             status: "completed",
         };
-        console.log(newTransaction);
 
         axiosSecure
             .post("/transactions", newTransaction)
             .then((data) => {
-                console.log(data);
                 if (data.data.insertedId) {
                     Swal.fire({
                         title: "Transaction Added Successfully!",
@@ -47,7 +47,6 @@ const AddTransaction = () => {
                 form.reset();
             })
             .catch((err) => {
-                console.log(err);
                 Swal.fire({
                     title: "Something went wrong!",
                     text: err.message,
@@ -55,11 +54,11 @@ const AddTransaction = () => {
                     confirmButtonColor: "#FCE252",
                 });
             });
-
-    //   const bara =  await axios.post("http://localhost:5000/transactions", newTransaction)
-    //   console.log(bara)
-
     };
+
+    // Category options based on type
+    const incomeCategories = ["Salary", "Bonus", "Freelance"];
+    const expenseCategories = ["Home", "Food", "Transport", "Health", "Personal", "Education", "Entertainment", "Shopping", "Rent", "Other"];
 
     return (
         <div className="min-h-screen flex flex-col items-center py-10 px-4">
@@ -81,6 +80,8 @@ const AddTransaction = () => {
                             <label className="text-sm text-neutral-600">Type</label>
                             <select
                                 name="type"
+                                value={selectedType}
+                                onChange={(e) => setSelectedType(e.target.value)}
                                 className="w-full mt-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                             >
                                 <option value="Income">Income</option>
@@ -95,11 +96,14 @@ const AddTransaction = () => {
                                 className="w-full mt-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                             >
                                 <option value="">Select Category</option>
-                                <option value="Salary">Salary</option>
-                                <option value="Food">Food</option>
-                                <option value="Transport">Transport</option>
-                                <option value="Shopping">Shopping</option>
-                                <option value="Other">Other</option>
+                                {(selectedType === "Income"
+                                    ? incomeCategories
+                                    : expenseCategories
+                                ).map((cat) => (
+                                    <option key={cat} value={cat}>
+                                        {cat}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                     </div>
