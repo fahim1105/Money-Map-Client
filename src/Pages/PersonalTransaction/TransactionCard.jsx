@@ -59,12 +59,21 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
     // Update handler
     const handleUpdate = (e) => {
         e.preventDefault();
+
+        // Normalize type to capitalized before sending
+        const formattedData = {
+            ...formData,
+            type:
+                formData.type.charAt(0).toUpperCase() + formData.type.slice(1).toLowerCase(),
+        };
+
         axiosSecure
-            .put(`/transactions/update/${transaction._id}`, formData)
+            .put(`/transactions/update/${transaction._id}`, formattedData)
             .then(() => {
                 toast.success("Transaction updated successfully!");
                 setIsModalOpen(false);
-                const updated = { ...currentTransaction, ...formData };
+
+                const updated = { ...currentTransaction, ...formattedData };
                 setCurrentTransaction(updated);
                 if (onUpdate) onUpdate(updated);
             })
@@ -73,7 +82,14 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
 
     // Get relevant categories dynamically
     const categories =
-        formData.type === "income" ? incomeCategories : expenseCategories;
+        formData.type.toLowerCase() === "income"
+            ? incomeCategories
+            : expenseCategories;
+
+    // Capitalize for display consistency
+    const displayType =
+        currentTransaction.type.charAt(0).toUpperCase() +
+        currentTransaction.type.slice(1).toLowerCase();
 
     return (
         <>
@@ -84,12 +100,12 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                         <strong className="text-secondary">Type:</strong>{" "}
                         <span
                             className={
-                                currentTransaction.type === "income"
-                                    ? "text-green-500"
-                                    : "text-red-500"
+                                displayType === "Income"
+                                    ? "text-green-500 font-semibold"
+                                    : "text-red-500 font-semibold"
                             }
                         >
-                            {currentTransaction.type}
+                            {displayType}
                         </span>
                     </p>
                     <p className="text-lg text-white">
@@ -142,12 +158,12 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                                 <label className="text-white block mb-1">Type</label>
                                 <select
                                     name="type"
-                                    value={formData.type}
+                                    value={formData.type.toLowerCase()}
                                     onChange={(e) =>
                                         setFormData({
                                             ...formData,
                                             type: e.target.value,
-                                            category: "", // reset category when type changes
+                                            category: "",
                                         })
                                     }
                                     className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
