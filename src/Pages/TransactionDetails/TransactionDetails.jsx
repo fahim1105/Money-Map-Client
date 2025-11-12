@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLoaderData, Link } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import { FaArrowLeft, FaMoneyBill, FaUser } from "react-icons/fa";
 import { MdCategory } from "react-icons/md";
 import { FaRegCalendarDays } from "react-icons/fa6";
@@ -8,6 +8,7 @@ import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
 const TransactionDetails = () => {
     const detailsData = useLoaderData();
     const axiosSecure = UseAxiosSecure();
+    const navigate = useNavigate();
     const {
         _id: transactionId,
         type,
@@ -56,12 +57,12 @@ const TransactionDetails = () => {
         <div className="min-h-screen bg-base-200 flex flex-col items-center py-10 px-4">
             <div className="w-full max-w-3xl bg-base-100 shadow-lg rounded-2xl p-8 relative">
                 {/* Back button */}
-                <Link
-                    to="/transactions"
+                <button
+                    onClick={() => navigate(-1)}
                     className="absolute left-6 top-6 text-sm text-gray-500 hover:text-gray-800 flex items-center gap-2"
                 >
                     <FaArrowLeft /> Back
-                </Link>
+                </button>
 
                 {/* Title */}
                 <h2 className="text-3xl font-semibold text-center mb-6 text-neutral-800">
