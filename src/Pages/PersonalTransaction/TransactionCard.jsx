@@ -8,7 +8,6 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
     const axiosSecure = UseAxiosSecure();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Local state for instant UI updates
     const [currentTransaction, setCurrentTransaction] = useState(transaction);
 
     const [formData, setFormData] = useState({
@@ -18,6 +17,21 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
         description: transaction.description || "",
         date: transaction.date ? new Date(transaction.date).toISOString().split("T")[0] : "",
     });
+
+    // Category lists
+    const incomeCategories = ["Salary", "Bonus", "Freelance"];
+    const expenseCategories = [
+        "Home",
+        "Food",
+        "Transport",
+        "Health",
+        "Personal",
+        "Education",
+        "Entertainment",
+        "Shopping",
+        "Rent",
+        "Other",
+    ];
 
     // Delete handler
     const handleDelete = () => {
@@ -37,9 +51,7 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                         Swal.fire("Deleted!", "Transaction deleted successfully.", "success");
                         onDelete(transaction._id);
                     })
-                    .catch(() => {
-                        toast.error("Failed to delete transaction");
-                    });
+                    .catch(() => toast.error("Failed to delete transaction"));
             }
         });
     };
@@ -52,18 +64,16 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
             .then(() => {
                 toast.success("Transaction updated successfully!");
                 setIsModalOpen(false);
-
-                // Instantly update local state for live UI changes
                 const updated = { ...currentTransaction, ...formData };
                 setCurrentTransaction(updated);
-
-                // Notify parent if needed
                 if (onUpdate) onUpdate(updated);
             })
-            .catch(() => {
-                toast.error("Failed to update transaction");
-            });
+            .catch(() => toast.error("Failed to update transaction"));
     };
+
+    // Get relevant categories dynamically
+    const categories =
+        formData.type === "income" ? incomeCategories : expenseCategories;
 
     return (
         <>
@@ -137,6 +147,7 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                                         setFormData({
                                             ...formData,
                                             type: e.target.value,
+                                            category: "", // reset category when type changes
                                         })
                                     }
                                     className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
@@ -160,11 +171,12 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                                     }
                                     className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
                                 >
-                                    <option value="Salary">Salary</option>
-                                    <option value="Food">Food</option>
-                                    <option value="Transport">Transport</option>
-                                    <option value="Shopping">Shopping</option>
-                                    <option value="Others">Others</option>
+                                    <option value="">Select Category</option>
+                                    {categories.map((cat) => (
+                                        <option key={cat} value={cat}>
+                                            {cat}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
 
