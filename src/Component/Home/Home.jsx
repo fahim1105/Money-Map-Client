@@ -1,11 +1,11 @@
-import React from 'react';
-import Hero from '../Hero/Hero';
+import React from "react";
+import Hero from "../Hero/Hero";
 
 const Home = () => {
     return (
-        <div>
-            <Hero></Hero>
-        </div>
+        <main className="w-full min-h-screen overflow-hidden">
+            <Hero />
+        </main>
     );
 };
 
