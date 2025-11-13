@@ -1,6 +1,6 @@
 import axios from 'axios';
 const instance = axios.create({
-    baseURL: 'http://localhost:5000',
+    baseURL: 'https://money-map-server.vercel.app',
 });
 
 const UseAxios = () => {

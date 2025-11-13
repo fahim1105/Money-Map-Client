@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/transaction-details/:id",
-                loader: ({ params }) => fetch(`http://localhost:5000/transactions/${params.id}`),
+                loader: ({ params }) => fetch(`https://money-map-server.vercel.app/transactions/${params.id}`),
                 element: <PrivetRoute><TransactionDetails></TransactionDetails></PrivetRoute>
             },
             {

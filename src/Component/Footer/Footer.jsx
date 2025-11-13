@@ -32,7 +32,7 @@ const Footer = () => {
           }}
           className="w-full md:w-[50%]"
         >
-          <div className="flex items-center bg-base-100 rounded-full overflow-hidden">
+          <div className="flex items-center bg-white  rounded-full overflow-hidden">
             <input
               type="email"
               placeholder="Enter your email"
@@ -41,7 +41,7 @@ const Footer = () => {
             />
             <button
               type="submit"
-              className="bg-secondary text-white px-5 py-2 font-medium hover:bg-primary transition"
+              className="bg-[#708238] text-white px-5 py-2 font-medium hover:bg-neutral transition"
             >
               Subscribe
             </button>

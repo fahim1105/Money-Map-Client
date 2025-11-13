@@ -3,12 +3,14 @@ import { useLoaderData, useNavigate } from "react-router";
 import { FaArrowLeft, FaMoneyBill, FaUser } from "react-icons/fa";
 import { MdCategory, MdDescription } from "react-icons/md";
 import { FaRegCalendarDays } from "react-icons/fa6";
-import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
+// import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
 import Loader from "../../Component/Loader/Loader";
+import UseAxios from "../../Hooks/UseAxios/UseAxios";
 
 const TransactionDetails = () => {
     const detailsData = useLoaderData();
-    const axiosSecure = UseAxiosSecure();
+    // const axiosSecure = UseAxiosSecure();
+    const axios = UseAxios();
     const navigate = useNavigate();
 
     const {
@@ -36,7 +38,7 @@ const TransactionDetails = () => {
                 return;
             }
 
-            axiosSecure
+            axios
                 .get(`/transactions?email=${email}`)
                 .then((res) => {
                     const data = res.data;
@@ -54,7 +56,7 @@ const TransactionDetails = () => {
                     setLoading(false);
                 });
         }
-    }, [category, email, axiosSecure]);
+    }, [category, email, axios]);
 
     // Loader while fetching
     if (loading) {

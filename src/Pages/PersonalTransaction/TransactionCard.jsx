@@ -62,7 +62,6 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-
         const formattedData = {
             ...formData,
             type:
@@ -104,49 +103,57 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
     return (
         <>
             {/* Transaction Card */}
-            <div className="relative border-2 border-primary rounded-xl bg-black/50 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 w-full max-w-md mx-auto">
-                <div className="p-6 text-neutral flex flex-col gap-3">
+            <div className="relative border border-primary/40 rounded-2xl bg-gray-900/60 backdrop-blur-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 w-full max-w-sm mx-auto">
+                <div className="p-6 flex flex-col gap-3 text-gray-100">
                     <p className="text-lg flex flex-col sm:flex-row gap-1">
-                        <strong className="text-secondary w-24">Type:</strong>{" "}
+                        <strong className="text-secondary w-24">Type:</strong>
                         <span
                             className={
                                 displayType === "Income"
-                                    ? "text-green-500 font-semibold"
-                                    : "text-red-500 font-semibold"
+                                    ? "text-green-400 font-semibold"
+                                    : "text-red-400 font-semibold"
                             }
                         >
                             {displayType}
                         </span>
                     </p>
-                    <p className="text-lg flex text-white flex-col sm:flex-row gap-1">
-                        <strong className="text-secondary w-24">Category:</strong>{" "}
-                        {currentTransaction.category}
-                    </p>
-                    <p className="text-lg flex text-white flex-col sm:flex-row gap-1">
-                        <strong className="text-secondary w-24">Amount:</strong> $
-                        {currentTransaction.amount}
-                    </p>
-                    <p className="text-lg flex text-white flex-col sm:flex-row gap-1">
-                        <strong className="text-secondary w-24">Date:</strong>{" "}
-                        {currentTransaction.date
-                            ? new Date(currentTransaction.date).toLocaleDateString()
-                            : "N/A"}
+
+                    <p className="text-lg flex flex-col sm:flex-row gap-1">
+                        <strong className="text-secondary w-24">Category:</strong>
+                        <span className="truncate">{currentTransaction.category}</span>
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                    <p className="text-lg flex flex-col sm:flex-row gap-1">
+                        <strong className="text-secondary w-24">Amount:</strong>
+                        <span>${currentTransaction.amount}</span>
+                    </p>
+
+                    <p className="text-lg flex flex-col sm:flex-row gap-1">
+                        <strong className="text-secondary w-24">Date:</strong>
+                        <span>
+                            {currentTransaction.date
+                                ? new Date(currentTransaction.date).toLocaleDateString()
+                                : "N/A"}
+                        </span>
+                    </p>
+
+                    {/* Buttons Section */}
+                    <div className="flex flex-col sm:flex-row flex-wrap gap-3 mt-5">
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="bg-blue-500/90 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition flex-1"
+                            className="bg-blue-500/90 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition flex-1 min-w-[100px]"
                         >
                             Update
                         </button>
+
                         <button
                             onClick={handleDelete}
-                            className="bg-red-500/90 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition flex-1"
+                            className="bg-red-500/90 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition flex-1 min-w-[100px]"
                         >
                             Delete
                         </button>
-                        <Link to={`/transaction-details/${transaction._id}`} className="flex-1">
+
+                        <Link to={`/transaction-details/${transaction._id}`} className="flex-1 min-w-[100px]">
                             <button className="bg-gray-500/90 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium transition w-full">
                                 View Details
                             </button>
@@ -162,6 +169,7 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                         <h2 className="text-2xl font-semibold text-white mb-6 text-center">
                             Update Transaction
                         </h2>
+
                         <form onSubmit={handleUpdate} className="flex flex-col gap-4">
                             {/* Type */}
                             <div>
@@ -170,7 +178,11 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                                     name="type"
                                     value={formData.type.toLowerCase()}
                                     onChange={(e) =>
-                                        setFormData({ ...formData, type: e.target.value, category: "" })
+                                        setFormData({
+                                            ...formData,
+                                            type: e.target.value,
+                                            category: "",
+                                        })
                                     }
                                     className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
                                 >

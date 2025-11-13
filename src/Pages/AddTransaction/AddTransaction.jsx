@@ -71,8 +71,8 @@ const AddTransaction = () => {
                     </p>
                 </Link>
 
-                <h2 className="text-2xl sm:text-3xl md:text-3xl font-semibold text-center mb-6 text-neutral-800">
-                    Add <span className="text-primary">Transaction</span>
+                <h2 className="text-2xl sm:text-3xl md:text-3xl text-primary font-semibold text-center mb-6">
+                    Add <span className="text-[#708238]">Transaction</span>
                 </h2>
 
                 <form onSubmit={handleAddTransaction} className="space-y-5">
