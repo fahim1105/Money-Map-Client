@@ -82,7 +82,7 @@ const Banner = () => {
                 </p>
 
                 <Link
-                  to="/add-transaction"
+                  to="/add-transition"
                   className="inline-block px-6 sm:px-8 py-2.5 sm:py-3 rounded-full text-sm sm:text-lg font-semibold text-white shadow-md hover:shadow-xl transition-transform transform hover:scale-105"
                   style={{
                     background:

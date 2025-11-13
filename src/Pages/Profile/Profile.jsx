@@ -62,19 +62,19 @@ const Profile = () => {
     };
 
     return (
-        <div className="min-h-screen w-full bg-neutral/20 text-white px-6 md:px-16 py-16 flex flex-col gap-10">
+        <div className="min-h-screen w-full bg-neutral/20 text-white px-4 sm:px-8 md:px-16 py-12 flex flex-col gap-10">
             {/* Back Button */}
-            <div className="flex justify-between items-center">
+            <div className="flex justify-start">
                 <button
                     onClick={() => window.history.back()}
-                    className="w-fit text-sm text-black hover:text-white px-6 py-2 rounded-full bg-secondary hover:bg-primary transition-all"
+                    className="w-fit text-sm text-black hover:text-white px-4 py-2 rounded-full bg-secondary hover:bg-primary transition-all"
                 >
                     ← Back
                 </button>
             </div>
 
             {/* Main Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
                 {/* LEFT: Profile Image */}
                 <motion.div
                     data-aos="fade-right"
@@ -93,46 +93,48 @@ const Profile = () => {
                         <img
                             src={user?.photoURL || "https://i.ibb.co/Fz9v0Zr/default.jpg"}
                             alt={user?.displayName || "profile"}
-                            className="w-full h-[420px] object-cover"
+                            className="w-full h-[300px] sm:h-[420px] object-cover"
                         />
 
                         {/* Overlay info */}
-                        <div className="absolute left-4 bottom-4 bg-black/20 backdrop-blur rounded-lg p-3 flex flex-col gap-2 border border-white/10">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                                    <FaUserCircle className="text-2xl opacity-80" />
+                        <div className="absolute left-2 sm:left-4 bottom-2 sm:bottom-4 bg-black/20 backdrop-blur rounded-lg p-2 sm:p-3 flex flex-col gap-2 border border-white/10">
+                            <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/10 flex items-center justify-center">
+                                    <FaUserCircle className="text-xl sm:text-2xl opacity-80" />
                                 </div>
                                 <div>
-                                    <p className="text-sm font-medium">{user?.displayName || "User Name"}</p>
+                                    <p className="text-xs sm:text-sm font-medium">
+                                        {user?.displayName || "User Name"}
+                                    </p>
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-3 text-xs opacity-80">
+                            <div className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs opacity-80">
                                 <motion.span
-                                    className="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-green-500/20 text-green-300"
+                                    className="inline-flex items-center gap-1 sm:gap-2 px-2 py-1 rounded-full bg-green-500/20 text-green-300"
                                     animate={{ scale: [1, 1.2, 1] }}
                                     transition={{ duration: 1, repeat: Infinity }}
                                 >
                                     ● Active
                                 </motion.span>
-                                <span className="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-blue-400/10">
+                                <span className="inline-flex items-center gap-1 sm:gap-2 px-2 py-1 rounded-full bg-blue-400/10">
                                     <FaCheckCircle /> Verified
                                 </span>
                             </div>
                         </div>
 
                         {/* Floating actions */}
-                        <div className="absolute right-4 top-4 flex flex-col items-end gap-2">
+                        <div className="absolute right-2 sm:right-4 top-2 sm:top-4 flex flex-col items-end gap-2">
                             <button
                                 onClick={() => setIsEditing(true)}
-                                className="px-4 py-2 rounded-full bg-neutral hover:bg-primary text-sm shadow-md"
+                                className="px-3 sm:px-4 py-1 sm:py-2 rounded-full bg-neutral hover:bg-primary text-xs sm:text-sm shadow-md"
                                 aria-label="Edit profile"
                             >
                                 Edit
                             </button>
                             <button
                                 onClick={copyEmail}
-                                className="px-3 py-1 rounded-full bg-neutral hover:bg-primary text-xs"
+                                className="px-2 sm:px-3 py-1 rounded-full bg-neutral hover:bg-primary text-[10px] sm:text-xs"
                                 title="Copy email"
                             >
                                 Copy Email
@@ -152,20 +154,17 @@ const Profile = () => {
                     <div className="space-y-6 md:px-6">
                         {/* Header */}
                         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-                            <div>
-                                <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">
-                                    {user?.displayName || "User Name"}
-                                </h1>
-                                
-                            </div>
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight">
+                                {user?.displayName || "User Name"}
+                            </h1>
                         </div>
 
                         {/* Info Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Contact */}
-                            <div className="p-6 rounded-2xl bg-black/30 border border-white/6">
+                            <div className="p-4 sm:p-6 rounded-2xl bg-black/30 border border-white/6">
                                 <h3 className="text-lg font-medium mb-3">Contact</h3>
-                                <div className="flex items-center gap-3 text-sm opacity-80">
+                                <div className="flex items-center gap-2 sm:gap-3 text-sm opacity-80">
                                     <FaUserCircle />
                                     <div>
                                         <div className="font-medium">{user?.email || "No email"}</div>
@@ -173,7 +172,7 @@ const Profile = () => {
                                     </div>
                                 </div>
 
-                                <div className="mt-4 flex items-center gap-3 text-sm opacity-80">
+                                <div className="mt-4 flex items-center gap-2 sm:gap-3 text-sm opacity-80">
                                     <FaMapMarkerAlt />
                                     <div>
                                         <div className="font-medium">Dhaka, Bangladesh</div>
@@ -183,7 +182,7 @@ const Profile = () => {
                             </div>
 
                             {/* Account */}
-                            <div className="p-6 rounded-2xl bg-black/30 border border-white/6">
+                            <div className="p-4 sm:p-6 rounded-2xl bg-black/30 border border-white/6">
                                 <h3 className="text-lg font-medium mb-3">Account</h3>
                                 <p className="text-sm opacity-80">
                                     Last Login: <span className="font-medium">{formatDate(user?.metadata?.lastSignInTime)}</span>
@@ -193,7 +192,7 @@ const Profile = () => {
                                 </p>
 
                                 <div className="mt-4 flex items-center gap-3">
-                                    <div className="w-12 h-12 rounded-lg bg-white/6 flex items-center justify-center">A</div>
+                                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white/6 flex items-center justify-center">A</div>
                                     <div>
                                         <div className="text-sm font-medium">Account health</div>
                                         <div className="text-xs opacity-70">Good — no issues found</div>
@@ -203,17 +202,17 @@ const Profile = () => {
                         </div>
 
                         {/* About / Bio */}
-                        <div className="p-6 rounded-2xl bg-black/30 border border-white/8">
+                        <div className="p-4 sm:p-6 rounded-2xl bg-black/30 border border-white/8">
                             <h3 className="text-lg font-medium mb-3">About</h3>
                             <p className="text-sm opacity-80 leading-relaxed">
                                 {user?.displayName
-                                    ? `I’m ${user.displayName}, passionate about finance and money management. I enjoy tracking expenses, analyzing budgets, and finding smart ways to grow and manage money..`
+                                    ? `I’m ${user.displayName}, passionate about finance and money management. I enjoy tracking expenses, analyzing budgets, and finding smart ways to grow and manage money.`
                                     : "No bio provided yet. Add a short bio to tell people about yourself."}
                             </p>
                         </div>
 
                         {/* Membership info */}
-                        <div className="text-lg font-bold opacity-70">
+                        <div className="text-sm sm:text-lg font-bold opacity-70">
                             Member since <span className="font-medium">{formatDate(user?.metadata?.creationTime)}</span>
                         </div>
                     </div>
@@ -222,17 +221,17 @@ const Profile = () => {
 
             {/* Edit Modal */}
             {isEditing && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50">
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 px-4">
                     <form
                         onSubmit={handleUpdate}
-                        className="bg-[#0f1724] p-8 rounded-2xl w-full max-w-md space-y-6 border border-white/10"
+                        className="bg-[#0f1724] p-6 sm:p-8 rounded-2xl w-full max-w-md space-y-6 border border-white/10"
                     >
-                        <h2 className="text-xl font-semibold">Edit Profile</h2>
+                        <h2 className="text-xl font-semibold text-white">Edit Profile</h2>
 
                         <input
                             type="text"
                             placeholder="New Name"
-                            className="w-full px-4 py-3 rounded-lg bg-white/6 border border-white/20"
+                            className="w-full px-4 py-3 rounded-lg bg-white/6 border border-white/20 text-white"
                             value={newName}
                             onChange={(e) => setNewName(e.target.value)}
                         />
@@ -240,7 +239,7 @@ const Profile = () => {
                         <input
                             type="text"
                             placeholder="New Photo URL"
-                            className="w-full px-4 py-3 rounded-lg bg-white/6 border border-white/20"
+                            className="w-full px-4 py-3 rounded-lg bg-white/6 border border-white/20 text-white"
                             value={newPhoto}
                             onChange={(e) => setNewPhoto(e.target.value)}
                         />
@@ -249,13 +248,13 @@ const Profile = () => {
                             <button
                                 type="button"
                                 onClick={() => setIsEditing(false)}
-                                className="px-5 py-2 bg-white/10 rounded-lg hover:bg-white/20"
+                                className="px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 text-white"
                             >
                                 Cancel
                             </button>
                             <button
                                 type="submit"
-                                className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg hover:opacity-90"
+                                className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg hover:opacity-90 text-white"
                             >
                                 Save
                             </button>

@@ -1,14 +1,16 @@
 import React from "react";
 import Banner from "./Banner/Banner";
 import StaticSections from "./StaticSections/StaticSections";
+import Overview from "./Overview/Overview";
 
 const Hero = () => {
     return (
         <main className="w-full overflow-hidden">
             <Banner />
-            <section className="mt-16 md:mt-24">
+            <section >
                 <StaticSections />
             </section>
+            <Overview></Overview>
         </main>
     );
 };
