@@ -6,7 +6,6 @@ import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
 const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
     const axiosSecure = UseAxiosSecure();
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const [currentTransaction, setCurrentTransaction] = useState(transaction);
 
     const [formData, setFormData] = useState({
@@ -14,10 +13,11 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
         category: transaction.category,
         amount: transaction.amount,
         description: transaction.description || "",
-        date: transaction.date ? new Date(transaction.date).toISOString().split("T")[0] : "",
+        date: transaction.date
+            ? new Date(transaction.date).toISOString().split("T")[0]
+            : "",
     });
 
-    // Category lists
     const incomeCategories = ["Salary", "Bonus", "Freelance"];
     const expenseCategories = [
         "Home",
@@ -32,7 +32,6 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
         "Other",
     ];
 
-    // Delete handler
     const handleDelete = () => {
         Swal.fire({
             title: "Are you sure?",
@@ -61,15 +60,14 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
         });
     };
 
-    // Update handler
     const handleUpdate = (e) => {
         e.preventDefault();
 
-        // Normalize type to capitalized before sending
         const formattedData = {
             ...formData,
             type:
-                formData.type.charAt(0).toUpperCase() + formData.type.slice(1).toLowerCase(),
+                formData.type.charAt(0).toUpperCase() +
+                formData.type.slice(1).toLowerCase(),
         };
 
         axiosSecure
@@ -78,10 +76,9 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                 Swal.fire({
                     title: "Updated",
                     icon: "success",
-                    draggable: true
+                    draggable: true,
                 });
                 setIsModalOpen(false);
-
                 const updated = { ...currentTransaction, ...formattedData };
                 setCurrentTransaction(updated);
                 if (onUpdate) onUpdate(updated);
@@ -95,13 +92,11 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
             });
     };
 
-    // Get relevant categories dynamically
     const categories =
         formData.type.toLowerCase() === "income"
             ? incomeCategories
             : expenseCategories;
 
-    // Capitalize for display consistency
     const displayType =
         currentTransaction.type.charAt(0).toUpperCase() +
         currentTransaction.type.slice(1).toLowerCase();
@@ -111,8 +106,8 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
             {/* Transaction Card */}
             <div className="relative border-2 border-primary rounded-xl bg-black/50 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 w-full max-w-md mx-auto">
                 <div className="p-6 text-neutral flex flex-col gap-3">
-                    <p className="text-lg">
-                        <strong className="text-secondary">Type:</strong>{" "}
+                    <p className="text-lg flex flex-col sm:flex-row gap-1">
+                        <strong className="text-secondary w-24">Type:</strong>{" "}
                         <span
                             className={
                                 displayType === "Income"
@@ -123,36 +118,36 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                             {displayType}
                         </span>
                     </p>
-                    <p className="text-lg text-white">
-                        <strong className="text-secondary">Category:</strong>{" "}
+                    <p className="text-lg flex text-white flex-col sm:flex-row gap-1">
+                        <strong className="text-secondary w-24">Category:</strong>{" "}
                         {currentTransaction.category}
                     </p>
-                    <p className="text-lg text-white">
-                        <strong className="text-secondary">Amount:</strong> $
+                    <p className="text-lg flex text-white flex-col sm:flex-row gap-1">
+                        <strong className="text-secondary w-24">Amount:</strong> $
                         {currentTransaction.amount}
                     </p>
-                    <p className="text-lg text-white">
-                        <strong className="text-secondary">Date:</strong>{" "}
+                    <p className="text-lg flex text-white flex-col sm:flex-row gap-1">
+                        <strong className="text-secondary w-24">Date:</strong>{" "}
                         {currentTransaction.date
                             ? new Date(currentTransaction.date).toLocaleDateString()
                             : "N/A"}
                     </p>
 
-                    <div className="flex gap-3 mt-4">
+                    <div className="flex flex-col sm:flex-row gap-3 mt-4">
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="bg-blue-500/90 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition"
+                            className="bg-blue-500/90 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition flex-1"
                         >
                             Update
                         </button>
                         <button
                             onClick={handleDelete}
-                            className="bg-red-500/90 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition"
+                            className="bg-red-500/90 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition flex-1"
                         >
                             Delete
                         </button>
-                        <Link to={`/transaction-details/${transaction._id}`}>
-                            <button className="bg-gray-500/90 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium transition">
+                        <Link to={`/transaction-details/${transaction._id}`} className="flex-1">
+                            <button className="bg-gray-500/90 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium transition w-full">
                                 View Details
                             </button>
                         </Link>
@@ -162,8 +157,8 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
 
             {/* Update Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-                    <div className="bg-gray-900 border border-gray-700 rounded-2xl p-8 w-full max-w-lg shadow-2xl relative">
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+                    <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 sm:p-8 w-full max-w-lg shadow-2xl relative overflow-y-auto max-h-[90vh]">
                         <h2 className="text-2xl font-semibold text-white mb-6 text-center">
                             Update Transaction
                         </h2>
@@ -175,11 +170,7 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                                     name="type"
                                     value={formData.type.toLowerCase()}
                                     onChange={(e) =>
-                                        setFormData({
-                                            ...formData,
-                                            type: e.target.value,
-                                            category: "",
-                                        })
+                                        setFormData({ ...formData, type: e.target.value, category: "" })
                                     }
                                     className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
                                 >
@@ -188,17 +179,14 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                                 </select>
                             </div>
 
-                            {/* Category Dropdown */}
+                            {/* Category */}
                             <div>
                                 <label className="text-white block mb-1">Category</label>
                                 <select
                                     name="category"
                                     value={formData.category}
                                     onChange={(e) =>
-                                        setFormData({
-                                            ...formData,
-                                            category: e.target.value,
-                                        })
+                                        setFormData({ ...formData, category: e.target.value })
                                     }
                                     className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
                                 >
@@ -219,10 +207,7 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                                     name="amount"
                                     value={formData.amount}
                                     onChange={(e) =>
-                                        setFormData({
-                                            ...formData,
-                                            amount: e.target.value,
-                                        })
+                                        setFormData({ ...formData, amount: e.target.value })
                                     }
                                     className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
                                 />
@@ -235,10 +220,7 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                                     name="description"
                                     value={formData.description}
                                     onChange={(e) =>
-                                        setFormData({
-                                            ...formData,
-                                            description: e.target.value,
-                                        })
+                                        setFormData({ ...formData, description: e.target.value })
                                     }
                                     className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
                                     rows="2"
@@ -253,27 +235,24 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                                     name="date"
                                     value={formData.date}
                                     onChange={(e) =>
-                                        setFormData({
-                                            ...formData,
-                                            date: e.target.value,
-                                        })
+                                        setFormData({ ...formData, date: e.target.value })
                                     }
                                     className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
                                 />
                             </div>
 
                             {/* Buttons */}
-                            <div className="flex justify-end gap-3 mt-4">
+                            <div className="flex flex-col sm:flex-row justify-end gap-3 mt-4">
                                 <button
                                     type="button"
                                     onClick={() => setIsModalOpen(false)}
-                                    className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg"
+                                    className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto"
                                 >
                                     Update
                                 </button>

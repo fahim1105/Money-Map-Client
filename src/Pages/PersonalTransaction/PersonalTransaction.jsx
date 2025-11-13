@@ -31,25 +31,25 @@ const PersonalTransaction = () => {
     };
 
     if (loading) {
-        return <Loader></Loader>;
+        return <Loader />;
     }
 
     if (!transactions.length) {
         return (
-            <p className="text-center my-50 flex justify-center items-center text-4xl text-base-100">
+            <p className="text-center my-12 flex justify-center items-center text-xl sm:text-2xl md:text-3xl text-base-100">
                 No transactions found.
             </p>
         );
     }
 
     return (
-        <div className="h-screen">
-            <div className="p-4 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="min-h-screen px-4 sm:px-6 md:px-8 py-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {transactions.map((transaction) => (
                     <TransactionCard
                         key={transaction._id}
                         transaction={transaction}
-                        onDelete={handleDeleteFromState} // 👈 এখানে পাঠানো হলো
+                        onDelete={handleDeleteFromState}
                     />
                 ))}
             </div>
