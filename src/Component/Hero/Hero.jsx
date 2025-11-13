@@ -3,6 +3,7 @@ import Banner from "./Banner/Banner";
 import StaticSections from "./StaticSections/StaticSections";
 import Overview from "./Overview/Overview";
 import { AuthContext } from "../../Provider/AuthContext/AuthContext";
+import OurCollaboration from "./OurCollaboration/OurCollaboration";
 
 const Hero = () => {
     const { user } = use(AuthContext)
@@ -16,6 +17,7 @@ const Hero = () => {
                 user &&
                 <Overview></Overview>
             }
+            <OurCollaboration></OurCollaboration>
         </main>
     );
 };
