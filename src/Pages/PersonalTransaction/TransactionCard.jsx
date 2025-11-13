@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { toast } from "react-hot-toast";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
@@ -51,7 +50,13 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                         Swal.fire("Deleted!", "Transaction deleted successfully.", "success");
                         onDelete(transaction._id);
                     })
-                    .catch(() => toast.error("Failed to delete transaction"));
+                    .catch(() => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong!",
+                        });
+                    });
             }
         });
     };
@@ -70,14 +75,24 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
         axiosSecure
             .put(`/transactions/update/${transaction._id}`, formattedData)
             .then(() => {
-                toast.success("Transaction updated successfully!");
+                Swal.fire({
+                    title: "Updated",
+                    icon: "success",
+                    draggable: true
+                });
                 setIsModalOpen(false);
 
                 const updated = { ...currentTransaction, ...formattedData };
                 setCurrentTransaction(updated);
                 if (onUpdate) onUpdate(updated);
             })
-            .catch(() => toast.error("Failed to update transaction"));
+            .catch(() => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!",
+                });
+            });
     };
 
     // Get relevant categories dynamically
