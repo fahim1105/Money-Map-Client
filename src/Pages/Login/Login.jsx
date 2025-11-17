@@ -103,7 +103,7 @@ const Login = () => {
     }
     return (
         <div className="flex items-center justify-center min-h-screen">
-            <div className='bg-secondary shadow-2xl rounded-2xl px-10 py-8 w-full max-w-sm'>
+            <div className='bg-[#A3B18A] shadow-2xl rounded-2xl px-10 py-8 w-full max-w-sm'>
                 <form onSubmit={handleLogin} >
                     <h1 className="text-3xl font-bold text-center text-base-300 mb-8">
                         Login
@@ -153,7 +153,7 @@ const Login = () => {
                     {/* Login Button */}
                     <button
                         type="submit"
-                        className="w-full bg-primary text-white py-3 rounded-xl hover:bg-neutral transition duration-200 font-semibold"
+                        className="w-full bg-[#708238] text-white py-3 rounded-xl hover:bg-neutral transition duration-200 font-semibold"
                     >
                         Login
                     </button>
@@ -162,7 +162,7 @@ const Login = () => {
                 <button
                     onClick={handleLoginWithGoogle}
                     type="submit"
-                    className="w-full flex justify-center items-center gap-2 bg-base-200 border-1 mt-2 text-accent hover:text-white py-3 rounded-xl hover:bg-accent transition duration-200 font-semibold"
+                    className="w-full flex justify-center items-center gap-2 bg-white border-1 mt-2 text-[#D4A373] hover:text-white py-3 rounded-xl hover:bg-[#D4A373] transition duration-200 font-semibold"
                 >
                     <FaGoogle />
                     Login With Google

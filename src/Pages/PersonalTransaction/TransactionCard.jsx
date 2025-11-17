@@ -106,7 +106,7 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
             <div className="relative border border-primary/40 rounded-2xl bg-gray-900/60 backdrop-blur-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 w-full max-w-sm mx-auto">
                 <div className="p-6 flex flex-col gap-3 text-gray-100">
                     <p className="text-lg flex flex-col sm:flex-row gap-1">
-                        <strong className="text-secondary w-24">Type:</strong>
+                        <strong className="text-[#A3B18A] w-24">Type:</strong>
                         <span
                             className={
                                 displayType === "Income"
@@ -119,17 +119,17 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                     </p>
 
                     <p className="text-lg flex flex-col sm:flex-row gap-1">
-                        <strong className="text-secondary w-24">Category:</strong>
+                        <strong className="text-[#A3B18A] w-24">Category:</strong>
                         <span className="truncate">{currentTransaction.category}</span>
                     </p>
 
                     <p className="text-lg flex flex-col sm:flex-row gap-1">
-                        <strong className="text-secondary w-24">Amount:</strong>
+                        <strong className="text-[#A3B18A] w-24">Amount:</strong>
                         <span>${currentTransaction.amount}</span>
                     </p>
 
                     <p className="text-lg flex flex-col sm:flex-row gap-1">
-                        <strong className="text-secondary w-24">Date:</strong>
+                        <strong className="text-[#A3B18A] w-24">Date:</strong>
                         <span>
                             {currentTransaction.date
                                 ? new Date(currentTransaction.date).toLocaleDateString()

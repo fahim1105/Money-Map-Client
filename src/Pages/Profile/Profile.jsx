@@ -67,7 +67,7 @@ const Profile = () => {
             <div className="flex justify-start">
                 <button
                     onClick={() => window.history.back()}
-                    className="w-fit text-sm text-black hover:text-white px-4 py-2 rounded-full bg-secondary hover:bg-primary transition-all"
+                    className="w-fit text-sm text-black hover:text-white px-4 py-2 rounded-full bg-[#A3B18A] hover:bg-[#708238] transition-all"
                 >
                     ← Back
                 </button>

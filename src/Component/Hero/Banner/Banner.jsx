@@ -77,7 +77,7 @@ const Banner = () => {
                   {slide.title}
                 </h1>
 
-                <p className="text-sm sm:text-lg md:text-xl lg:text-2xl text-base-200 mb-6 sm:mb-8">
+                <p className="text-sm text-white sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8">
                   {slide.subtitle}
                 </p>
 

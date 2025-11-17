@@ -81,7 +81,7 @@ const Navbar = () => {
     );
 
     return (
-        <nav className="navbar inset-0 bg-black/40 text-neutral shadow-sm border-b-2 border-black px-4 md:px-8 sticky top-0 z-50">
+        <nav className="navbar inset-0 bg-black/40 text-neutral shadow-sm border-b-2 border-black px-4 md:px-8 ">
             {/* Left Section */}
             <div className="navbar-start flex items-center gap-3">
                 {/* Mobile Menu */}

@@ -71,7 +71,7 @@ const AddTransaction = () => {
                     </p>
                 </Link>
 
-                <h2 className="text-2xl sm:text-3xl md:text-3xl text-primary font-semibold text-center mb-6">
+                <h2 className="text-2xl sm:text-3xl md:text-3xl text-[#D4A373] font-semibold text-center mb-6">
                     Add <span className="text-[#708238]">Transaction</span>
                 </h2>
 
@@ -169,7 +169,7 @@ const AddTransaction = () => {
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        className="w-full bg-primary text-white font-semibold py-2.5 sm:py-3 rounded-lg hover:bg-neutral transition"
+                        className="w-full bg-[#708238] text-white font-semibold py-2.5 sm:py-3 rounded-lg hover:bg-neutral transition"
                     >
                         Add Transaction
                     </button>
