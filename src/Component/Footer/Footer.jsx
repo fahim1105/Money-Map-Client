@@ -152,7 +152,7 @@ const Footer = () => {
         © {new Date().getFullYear()} Money Map — All rights reserved.
       </div>
       <div className="border-t border-gray-700 py-2 text-center text-sm text-neutral">
-        App Version: v1.0.2
+        App Version: v2.1.0
       </div>
     </footer>
   );

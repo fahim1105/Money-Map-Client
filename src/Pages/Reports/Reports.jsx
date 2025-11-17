@@ -24,53 +24,72 @@ const Reports = () => {
     // Fetch Data
     useEffect(() => {
         if (!user?.email) return;
+
+        setLoading(true);
+
         axiosSecure
             .get(`/transactions?email=${user.email}`)
-            .then((res) => setTransactions(res.data))
+            .then((res) => {
+                setTransactions(res.data?.transactions || []);
+            })
             .catch(() => toast.error("Failed to fetch transactions"))
             .finally(() => setLoading(false));
-    }, [user, axiosSecure]);
 
+    }, [user?.email]); // axiosSecure not required in deps
+
+    // Filtered transactions
     const displayedTransactions = useMemo(() => {
+        if (!Array.isArray(transactions)) return [];
+
         return transactions
             .filter((t) => t.amount)
             .filter((t) => {
                 if (!filteredMonth) return true;
                 if (!t.date) return false;
-                const month = new Date(t.date).getMonth() + 1;
-                return month === parseInt(filteredMonth);
+                return new Date(t.date).getMonth() + 1 === parseInt(filteredMonth);
             });
     }, [transactions, filteredMonth]);
 
+    // Income Total
     const incomeTotal = useMemo(
-        () => displayedTransactions.filter(t => t.type === "Income")
+        () => displayedTransactions
+            .filter((t) => t.type === "Income")
             .reduce((acc, t) => acc + Number(t.amount || 0), 0),
         [displayedTransactions]
     );
 
+    // Expense Total
     const expenseTotal = useMemo(
-        () => displayedTransactions.filter(t => t.type === "Expense")
+        () => displayedTransactions
+            .filter((t) => t.type === "Expense")
             .reduce((acc, t) => acc + Number(t.amount || 0), 0),
         [displayedTransactions]
     );
 
+    // Pie Chart Data
     const pieData = useMemo(() => {
         const map = {};
-        displayedTransactions.forEach(t => {
+
+        displayedTransactions.forEach((t) => {
             const cat = t.category || "Uncategorized";
             map[cat] = (map[cat] || 0) + Number(t.amount || 0);
         });
+
         return Object.entries(map).map(([name, value]) => ({ name, value }));
     }, [displayedTransactions]);
 
+    // Monthly Bar Chart Data
     const monthlyData = useMemo(() => {
         const data = months.map((m) => ({ month: m, Income: 0, Expense: 0 }));
-        displayedTransactions.forEach(t => {
+
+        displayedTransactions.forEach((t) => {
             if (!t.date) return;
             const idx = new Date(t.date).getMonth();
+
             if (t.type === "Income") data[idx].Income += Number(t.amount || 0);
             else if (t.type === "Expense") data[idx].Expense += Number(t.amount || 0);
         });
+
         return data;
     }, [displayedTransactions]);
 
@@ -79,12 +98,11 @@ const Reports = () => {
     return (
         <div className="min-h-screen bg-transparent text-white px-6 py-10 flex flex-col items-center">
             <div className="relative w-full max-w-7xl bg-white/5 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl p-10 overflow-hidden">
-                {/* Decorative glows */}
+
                 <div className="absolute -top-32 -left-32 w-72 h-72 bg-blue-500/25 rounded-full blur-3xl"></div>
                 <div className="absolute -bottom-32 -right-32 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl"></div>
 
-                {/* Header */}
-                <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-12 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
+                <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-12 tracking-tight">
                     Financial <span className="text-white">Reports</span>
                 </h2>
 
@@ -92,7 +110,7 @@ const Reports = () => {
                 <div className="mb-10 flex flex-wrap justify-center items-center gap-4">
                     <label className="text-gray-300 font-medium">Filter by Month:</label>
                     <select
-                        className="bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-sm text-white hover:bg-white/20 transition focus:ring-2 focus:ring-blue-400"
+                        className="bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-sm text-white hover:bg-white/20 transition"
                         value={filteredMonth}
                         onChange={(e) => setFilteredMonth(e.target.value)}
                     >
@@ -134,12 +152,13 @@ const Reports = () => {
                         <h3 className="text-lg font-semibold mb-4 text-center text-blue-400">
                             Category Breakdown
                         </h3>
+
                         {pieData.length > 0 ? (
                             <ResponsiveContainer width="100%" height={300}>
                                 <PieChart>
                                     <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
                                         {pieData.map((entry, idx) => (
-                                            <Cell key={`cell-${idx}`} fill={COLORS[idx % COLORS.length]} />
+                                            <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
                                         ))}
                                     </Pie>
                                     <Tooltip contentStyle={{ background: "rgba(0,0,0,0.6)", borderRadius: "10px", color: "#fff" }} />
@@ -155,6 +174,7 @@ const Reports = () => {
                         <h3 className="text-lg font-semibold mb-4 text-center text-blue-400">
                             Monthly Overview
                         </h3>
+
                         <ResponsiveContainer width="100%" height={300}>
                             <BarChart data={monthlyData}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#444" />
@@ -172,18 +192,14 @@ const Reports = () => {
                 {/* Insights */}
                 <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-white/20 rounded-2xl p-6 shadow-lg">
                     <h3 className="text-lg font-semibold mb-3 text-gray-300">Insights</h3>
+
                     <ul className="text-gray-400 space-y-2 text-sm list-disc list-inside">
-                        <li>
-                            You {incomeTotal > expenseTotal ? "saved money" : "spent more than you earned"} this period 💰
-                        </li>
-                        <li>
-                            Active categories: {pieData.length} 📊
-                        </li>
-                        <li>
-                            Total transactions analyzed: {displayedTransactions.length} 🧾
-                        </li>
+                        <li>You {incomeTotal > expenseTotal ? "saved money" : "spent more than you earned"} this period 💰</li>
+                        <li>Active categories: {pieData.length} 📊</li>
+                        <li>Total transactions analyzed: {displayedTransactions.length} 🧾</li>
                     </ul>
                 </div>
+
             </div>
         </div>
     );

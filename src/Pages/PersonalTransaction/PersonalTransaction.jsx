@@ -46,7 +46,7 @@ const PersonalTransaction = () => {
 
     if (!user) return <Loader />;
 
-    if (!totalTransaction ) {
+    if (!totalTransaction) {
         return (
             <div className="min-h-screen flex flex-col justify-center items-center text-center px-4">
                 <h2 className="text-3xl font-bold text-gray-300">No Transactions Found</h2>
@@ -85,7 +85,7 @@ const PersonalTransaction = () => {
             </div>
 
             {/* Transactions Grid */}
-            <div className="w-11/12 mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-10 gap-5">
+            <div className="w-11/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-10 gap-5">
                 {transactions.length === 0 ? (
                     <div className="col-span-full text-center py-10 space-y-10">
                         <h2 className="text-5xl font-semibold opacity-50">
@@ -93,8 +93,14 @@ const PersonalTransaction = () => {
                         </h2>
                     </div>
                 ) : (
-                    transactions.map((t) => (
-                        <TransactionCard key={t._id} transaction={t} />
+                    transactions.map((transaction) => (
+                        <TransactionCard
+                            key={transaction._id}
+                            transaction={transaction}
+                            setTransactions={setTransactions}
+                            transactions={transactions}
+                            totalTransaction={totalTransaction}
+                            setTotalTransaction={setTotalTransaction} />
                     ))
                 )}
             </div>

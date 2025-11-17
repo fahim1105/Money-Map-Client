@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import Swal from "sweetalert2";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
 
-const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
+const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions, setTotalTransaction, totalTransaction }) => {
     const axiosSecure = UseAxiosSecure();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentTransaction, setCurrentTransaction] = useState(transaction);
@@ -47,7 +47,10 @@ const TransactionCard = ({ transaction, onDelete, onUpdate }) => {
                     .delete(`/transactions/${transaction._id}`)
                     .then(() => {
                         Swal.fire("Deleted!", "Transaction deleted successfully.", "success");
-                        onDelete(transaction._id);
+                        // onDelete(transaction._id);
+                        const remainingTransaction = transactions.filter(trans => trans._id != transaction._id)
+                        setTransactions(remainingTransaction)
+                        setTotalTransaction(totalTransaction - 1)
                     })
                     .catch(() => {
                         Swal.fire({
