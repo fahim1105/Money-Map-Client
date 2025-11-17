@@ -35,7 +35,7 @@ const Reports = () => {
             .catch(() => toast.error("Failed to fetch transactions"))
             .finally(() => setLoading(false));
 
-    }, [user?.email]); // axiosSecure not required in deps
+    }, [user?.email, axiosSecure]); // axiosSecure not required in deps
 
     // Filtered transactions
     const displayedTransactions = useMemo(() => {

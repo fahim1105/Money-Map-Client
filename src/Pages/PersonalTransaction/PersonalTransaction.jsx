@@ -9,6 +9,8 @@ const PersonalTransaction = () => {
     const { user } = useContext(AuthContext);
     const axiosSecure = UseAxiosSecure();
     const [transactions, setTransactions] = useState([]);
+    const [loading, setLoading] = useState(true);
+
 
     // New
     const [totalTransaction, setTotalTransaction] = useState(0);
@@ -29,7 +31,7 @@ const PersonalTransaction = () => {
 
     useEffect(() => {
         if (!user?.email) return;
-
+        setLoading(true)
         setTransactions([]);
         axiosSecure
             .get(
@@ -40,11 +42,16 @@ const PersonalTransaction = () => {
                 setTransactions(res.data.transactions);
                 setTotalTransaction(res.data.total);
                 setTotalPage(Math.ceil(res.data.total / limit));
+                setLoading(false)
             })
             .catch((err) => console.log(err));
     }, [user, axiosSecure, currentPage, sort, order]);
 
     if (!user) return <Loader />;
+
+    if (loading) {
+        return <Loader></Loader>
+    }
 
     if (!totalTransaction) {
         return (
@@ -53,6 +60,7 @@ const PersonalTransaction = () => {
             </div>
         );
     }
+
 
     return (
         <div className="min-h-screen pb-20">
