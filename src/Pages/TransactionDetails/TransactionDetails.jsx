@@ -6,11 +6,13 @@ import { FaRegCalendarDays } from "react-icons/fa6";
 // import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
 import Loader from "../../Component/Loader/Loader";
 import UseAxios from "../../Hooks/UseAxios/UseAxios";
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
 
 const TransactionDetails = () => {
     const detailsData = useLoaderData();
     // const axiosSecure = UseAxiosSecure();
-    const axios = UseAxios();
+    // const axios = UseAxios();
+    const axiosSecure = UseAxiosSecure()
     const navigate = useNavigate();
 
     const {
@@ -38,10 +40,10 @@ const TransactionDetails = () => {
                 return;
             }
 
-            axios
+            axiosSecure
                 .get(`/transactions?email=${email}`)
                 .then((res) => {
-                    const data = res.data;
+                    const data = res.data.transactions;
                     const filtered = data.filter(
                         (t) =>
                             t.category?.toLowerCase() === category?.toLowerCase() &&
@@ -49,6 +51,7 @@ const TransactionDetails = () => {
                     );
                     const total = filtered.reduce((sum, t) => sum + Number(t.amount), 0);
                     setTotalCategoryAmount(total);
+                    console.log(data)
                     setLoading(false);
                 })
                 .catch((err) => {
@@ -56,7 +59,7 @@ const TransactionDetails = () => {
                     setLoading(false);
                 });
         }
-    }, [category, email, axios]);
+    }, [category, email, axiosSecure]);
 
     // Loader while fetching
     if (loading) {
