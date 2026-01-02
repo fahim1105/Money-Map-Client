@@ -2,6 +2,7 @@ import React from "react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 import FooterIMG from "../../assets/IMG_0644.jpeg";
 import Swal from "sweetalert2";
+import { Link } from "react-router";
 
 const Footer = () => {
   return (
@@ -95,7 +96,9 @@ const Footer = () => {
       {/* Main Footer */}
       <div className="max-w-6xl mx-auto px-6 pb-12 pt-8 grid grid-cols-2 sm:grid-cols-4 gap-8">
         <div>
-          <h2 className="text-secondary text-3xl font-bold mb-4">Money Map</h2>
+          <Link to="/">
+            <h2 className="text-secondary text-3xl font-bold mb-4">Money Map</h2>
+          </Link>
           <p className="text-sm text-accent leading-relaxed">
             Track. Save. Grow. <br />
             Manage your finances smartly with Money Map.
@@ -105,42 +108,60 @@ const Footer = () => {
         <div>
           <h3 className="text-secondary font-semibold mb-4">RESOURCES</h3>
           <ul className="space-y-2 text-sm text-accent">
-            <li>Application</li>
-            <li>Documentation</li>
-            <li>Systems</li>
-            <li>FAQ</li>
+            <li>
+              <Link to="/documentation">
+                Documentation
+              </Link>
+            </li>
+            <li>
+              <Link to="system">
+                Systems
+              </Link>
+            </li>
+            <li>
+              <Link to="/#faq">
+                FAQ
+              </Link>
+            </li>
           </ul>
         </div>
 
         <div>
           <h3 className="text-secondary font-semibold mb-4">COMPANY</h3>
           <ul className="space-y-2 text-sm text-accent">
-            <li>About Us</li>
-            <li>Blog</li>
-            <li>Careers</li>
-            <li>Press</li>
+            <li>
+              <Link to="/about-us">
+                About Us
+              </Link>
+            </li>
+            <li>
+              <Link to="/careers">
+                Careers
+              </Link>
+            </li>
+            <li>
+              <Link to="/press">
+                Press
+              </Link>
+            </li>
           </ul>
         </div>
 
         <div>
           <h3 className="text-secondary font-semibold mb-4">SOCIAL</h3>
           <ul className="space-y-2 text-sm text-accent">
-            <li>Facebook</li>
-            <li>Twitter</li>
-            <li>Instagram</li>
-            <li>LinkedIn</li>
+            <li><a href="https://www.facebook.com/aaff.115">Facebook</a></li>
+            <li><a href="https://www.instagram.com/aaff.115">Instagram</a></li>
+            <li><a href="https://www.linkedin.com/in/aaff115">LinkedIn</a></li>
           </ul>
           <div className="flex gap-4 mt-4 text-lg text-black">
-            <a href="#" className="hover:text-blue-400 transition">
+            <a href="https://www.facebook.com/aaff.115" className="hover:text-blue-400 transition">
               <FaFacebookF />
             </a>
-            <a href="#" className="hover:text-blue-400 transition">
-              <FaXTwitter />
-            </a>
-            <a href="#" className="hover:text-pink-400 transition">
+            <a href="https://www.instagram.com/aaff.115" className="hover:text-pink-400 transition">
               <FaInstagram />
             </a>
-            <a href="#" className="hover:text-blue-500 transition">
+            <a href="https://www.linkedin.com/in/aaff115" className="hover:text-blue-500 transition">
               <FaLinkedinIn />
             </a>
           </div>

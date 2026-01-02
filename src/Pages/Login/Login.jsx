@@ -103,9 +103,9 @@ const Login = () => {
     }
     return (
         <div className="flex items-center justify-center min-h-screen">
-            <div className='bg-[#A3B18A] shadow-2xl rounded-2xl px-10 py-8 w-full max-w-sm'>
+            <div className='bg-base-100 shadow-2xl rounded-2xl px-10 py-8 w-full max-w-sm'>
                 <form onSubmit={handleLogin} >
-                    <h1 className="text-3xl font-bold text-center text-base-300 mb-8">
+                    <h1 className="text-3xl font-bold text-center text-primary mb-8">
                         Login
                     </h1>
 
@@ -117,7 +117,7 @@ const Login = () => {
                             placeholder="Your Email"
                             name='email'
                             required
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-base-300"
+                            className="w-full px-4 py-3 border border-secondary placeholder:text-primary rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-content"
                         />
                     </div>
 
@@ -128,7 +128,7 @@ const Login = () => {
                             placeholder="Password"
                             required
                             name='password'
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-base-300"
+                            className="w-full px-4 py-3 border border-secondary rounded-xl placeholder:text-primary focus:outline-none focus:ring-2 focus:ring-primary-content"
                         />
                         <button
                             type="button"
@@ -145,7 +145,7 @@ const Login = () => {
                     {/* Remember and Forgot */}
                     <div onClick={handleForgetPassword} className="flex items-center justify-between text-sm mb-6">
 
-                        <button className="text-base-300 hover:underline">
+                        <button className="text-primary hover:underline">
                             Forgot password?
                         </button>
                     </div>
@@ -153,7 +153,7 @@ const Login = () => {
                     {/* Login Button */}
                     <button
                         type="submit"
-                        className="w-full bg-[#708238] text-white py-3 rounded-xl hover:bg-neutral transition duration-200 font-semibold"
+                        className="w-full bg-primary/80 text-base-100 py-3 rounded-xl hover:bg-primary transition duration-200 font-semibold"
                     >
                         Login
                     </button>
@@ -173,7 +173,7 @@ const Login = () => {
                     <p>
                         Don't have an account?{" "}
                         <Link to="/auth/register">
-                            <button className="text-base-300 font-semibold hover:underline">
+                            <button className="text-primary font-semibold hover:underline">
                                 Register
                             </button>
                         </Link>

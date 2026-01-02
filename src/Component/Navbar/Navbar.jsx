@@ -41,9 +41,12 @@ const Navbar = () => {
     <>
       <NavLink to="/" className={linkClasses}>Home</NavLink>
       <NavLink to="/add-transition" className={linkClasses}>Add Transaction</NavLink>
-      <NavLink to="/reports" className={linkClasses}>Reports</NavLink>
-      {user && (
+      {/* <NavLink to="/reports" className={linkClasses}>Reports</NavLink> */}
+      {/* {user && (
         <NavLink to="/my-transition" className={linkClasses}>My Transactions</NavLink>
+      )} */}
+      {user && (
+        <NavLink to="/dashboard" className={linkClasses}>Dashboard</NavLink>
       )}
     </>
   );
@@ -108,21 +111,21 @@ const Navbar = () => {
 
           {/* User Profile */}
           {user && (
-            <Link to="/my-profile" className="hidden sm:block">
+            <div className="hidden sm:block">
               <motion.img
                 whileHover={{ scale: 1.05 }}
                 src={user.photoURL || UserIMG}
                 alt="Profile"
                 className="w-10 h-10 rounded-full border-2 border-primary shadow-sm cursor-pointer object-cover"
               />
-            </Link>
+            </div>
           )}
 
           {/* Auth Button */}
           <div className="hidden lg:block">
             {user ? (
-              <button 
-                onClick={handleLogout} 
+              <button
+                onClick={handleLogout}
                 className="btn btn-primary text-base-100 min-h-0 h-10 px-6 rounded-xl  font-bold border-none shadow-md hover:brightness-95 transition-all"
               >
                 Logout
@@ -161,8 +164,8 @@ const Navbar = () => {
             >
               <div className="flex justify-between items-center mb-8 pb-4 border-b border-base-300">
                 <div className="flex items-center gap-3">
-                   <img src={NavImg} className="w-9 h-9 rounded-lg" alt="logo" />
-                   <span className="text-xl font-bold text-neutral">Money <span className="text-primary">Map</span></span>
+                  <img src={NavImg} className="w-9 h-9 rounded-lg" alt="logo" />
+                  <span className="text-xl font-bold text-neutral">Money <span className="text-primary">Map</span></span>
                 </div>
                 <button
                   onClick={() => setMobileMenu(false)}
@@ -176,9 +179,12 @@ const Navbar = () => {
                 {/* Reusing DesktopLinks but they will stack vertically due to flex-col */}
                 <NavLink to="/" onClick={() => setMobileMenu(false)} className={linkClasses}>Home</NavLink>
                 <NavLink to="/add-transition" onClick={() => setMobileMenu(false)} className={linkClasses}>Add Transaction</NavLink>
-                <NavLink to="/reports" onClick={() => setMobileMenu(false)} className={linkClasses}>Reports</NavLink>
+                {/* <NavLink to="/reports" onClick={() => setMobileMenu(false)} className={linkClasses}>Reports</NavLink>
                 {user && (
                   <NavLink to="/my-transition" onClick={() => setMobileMenu(false)} className={linkClasses}>My Transactions</NavLink>
+                )} */}
+                {user && (
+                  <NavLink to="dashboard" onClick={() => setMobileMenu(false)} className={linkClasses}>Dashboard</NavLink>
                 )}
               </div>
 
@@ -186,8 +192,8 @@ const Navbar = () => {
                 {user ? (
                   <div className="flex flex-col gap-4">
                     <div className="flex items-center gap-3 p-2 bg-base-200 rounded-lg">
-                        <img src={user.photoURL || UserIMG} className="w-10 h-10 rounded-full border border-primary" />
-                        <p className="text-sm font-bold text-neutral truncate">{user.displayName || "User"}</p>
+                      <img src={user.photoURL || UserIMG} className="w-10 h-10 rounded-full border border-primary" />
+                      <p className="text-sm font-bold text-neutral truncate">{user.displayName || "User"}</p>
                     </div>
                     <button
                       onClick={handleLogout}

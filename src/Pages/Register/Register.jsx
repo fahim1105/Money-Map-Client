@@ -82,8 +82,8 @@ const Register = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen  px-4">
-            <form onSubmit={handleResister} className="bg-[#A3B18A] shadow-2xl rounded-2xl px-8 py-8 w-full max-w-sm">
-                <h1 className="text-3xl font-bold text-center text-base-300 mb-8">
+            <form onSubmit={handleResister} className="bg-base-100 shadow-2xl rounded-2xl px-8 py-8 w-full max-w-sm">
+                <h1 className="text-3xl font-bold text-center text-primary mb-8">
                     Register
                 </h1>
 
@@ -94,7 +94,7 @@ const Register = () => {
                         placeholder="Your Name"
                         name="name"
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-base-300"
+                        className="w-full px-4 py-3 border border-secondary rounded-xl focus:outline-none placeholder:text-primary focus:ring-2 focus:ring-primary-content"
                     />
                     {nameError && <p className="font-semibold text-red-500 text-xs mt-2">{nameError}</p>}
                 </div>
@@ -106,7 +106,7 @@ const Register = () => {
                         placeholder="Your Photo URL"
                         name="photo"
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-base-300"
+                        className="w-full px-4 py-3 border border-secondary rounded-xl placeholder:text-primary focus:outline-none focus:ring-2 focus:ring-primary-content"
                     />
                 </div>
 
@@ -117,7 +117,7 @@ const Register = () => {
                         name="email"
                         placeholder="Email"
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-base-300"
+                        className="w-full px-4 py-3 border border-primary rounded-xl placeholder:text-primary focus:outline-none focus:ring-2 focus:ring-primary-content"
                     />
                 </div>
 
@@ -128,7 +128,7 @@ const Register = () => {
                         placeholder="Password"
                         name="password"
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-base-300"
+                        className="w-full px-4 py-3 border border-secondary rounded-xl placeholder:text-primary focus:outline-none focus:ring-2 focus:ring-primary-content"
                     />
                     <button
                         type="button"
@@ -146,7 +146,7 @@ const Register = () => {
                 {/* Register Button */}
                 <button
                     type="submit"
-                    className="w-full bg-[#708238] text-white py-3 rounded-xl hover:bg-neutral transition duration-200 font-semibold"
+                    className="w-full bg-primary/80 text-base-100 py-3 rounded-xl hover:bg-primary transition duration-200 font-semibold"
                 >
                     Register
                 </button>
@@ -160,11 +160,11 @@ const Register = () => {
                 </button>
 
                 {/* Login Link */}
-                <div className="text-center mt-6 text-sm">
+                <div className="text-center mt-6 text-primary-content text-sm">
                     <p>
                         Already have an account?{" "}
                         <Link to="/auth/login">
-                            <button className="text-base-300 font-semibold hover:underline">
+                            <button className="text-primary font-semibold hover:underline">
                                 Login
                             </button>
                         </Link>
