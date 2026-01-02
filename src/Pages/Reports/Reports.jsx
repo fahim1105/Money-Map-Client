@@ -96,27 +96,27 @@ const Reports = () => {
     if (loading) return <Loader />;
 
     return (
-        <div className="min-h-screen bg-transparent text-white px-6 py-10 flex flex-col items-center">
-            <div className="relative w-full max-w-7xl bg-white/5 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl p-10 overflow-hidden">
+        <div className="min-h-screen bg-transparent px-6 py-10 flex flex-col items-center">
+            <div className="relative w-full max-w-7xl bg-base-100/5 backdrop-blur-2xl rounded-3xl border border-base-200/10 shadow-2xl p-10 overflow-hidden">
 
                 <div className="absolute -top-32 -left-32 w-72 h-72 bg-blue-500/25 rounded-full blur-3xl"></div>
                 <div className="absolute -bottom-32 -right-32 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl"></div>
 
-                <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-12 tracking-tight">
-                    Financial <span className="text-white">Reports</span>
+                <h2 className="text-4xl md:text-5xl text-primary-content font-extrabold text-center mb-12 tracking-tight">
+                    Financial Reports
                 </h2>
 
                 {/* Month Filter */}
                 <div className="mb-10 flex flex-wrap justify-center items-center gap-4">
-                    <label className="text-gray-300 font-medium">Filter by Month:</label>
+                    <label className="text-primary-content font-medium">Filter by Month:</label>
                     <select
-                        className="bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-sm text-white hover:bg-white/20 transition"
+                        className="bg-primary-content/10 border border-primary-content/20 rounded-xl px-4 py-2 text-sm text-primary-content hover:bg-primary-content/20 transition"
                         value={filteredMonth}
                         onChange={(e) => setFilteredMonth(e.target.value)}
                     >
                         <option value="">All Months</option>
                         {months.map((m, idx) => (
-                            <option key={idx} value={idx + 1} className="text-black">
+                            <option key={idx} value={idx + 1} className="text-base-100">
                                 {m}
                             </option>
                         ))}
@@ -135,9 +135,9 @@ const Reports = () => {
                             key={i}
                             whileHover={{ scale: 1.05 }}
                             transition={{ type: "spring", stiffness: 200 }}
-                            className="bg-white/10 p-6 rounded-2xl border border-white/20 text-center shadow-lg hover:bg-white/15 transition"
+                            className="bg-primary-content/10 p-6 rounded-2xl border border-primary-content/20 text-center shadow-lg hover:bg-primary-content/15 transition"
                         >
-                            <p className="text-sm text-gray-400 mb-2">{item.label}</p>
+                            <p className="text-sm text-primary-content mb-2">{item.label}</p>
                             <h2 className={`text-3xl font-bold ${item.color}`}>
                                 <CountUp end={item.value || 0} duration={1.5} separator="," decimals={2} />
                             </h2>
@@ -148,7 +148,7 @@ const Reports = () => {
                 {/* Charts */}
                 <div className="grid md:grid-cols-2 gap-10 mb-12">
                     {/* Pie Chart */}
-                    <div className="bg-white/10 border border-white/20 rounded-2xl p-6 shadow-md backdrop-blur-xl">
+                    <div className="bg-primary-content/10 border border-primary-content/20 rounded-2xl p-6 shadow-md backdrop-blur-xl">
                         <h3 className="text-lg font-semibold mb-4 text-center text-blue-400">
                             Category Breakdown
                         </h3>
@@ -170,7 +170,7 @@ const Reports = () => {
                     </div>
 
                     {/* Bar Chart */}
-                    <div className="bg-white/10 border border-white/20 rounded-2xl p-6 shadow-md backdrop-blur-xl">
+                    <div className="bg-white/10 border border-primary-content/20 rounded-2xl p-6 shadow-md backdrop-blur-xl">
                         <h3 className="text-lg font-semibold mb-4 text-center text-blue-400">
                             Monthly Overview
                         </h3>
@@ -190,10 +190,10 @@ const Reports = () => {
                 </div>
 
                 {/* Insights */}
-                <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-white/20 rounded-2xl p-6 shadow-lg">
-                    <h3 className="text-lg font-semibold mb-3 text-gray-300">Insights</h3>
+                <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-primary-content/20 rounded-2xl p-6 shadow-lg">
+                    <h3 className="text-lg font-semibold mb-3 text-primary-content">Insights</h3>
 
-                    <ul className="text-gray-400 space-y-2 text-sm list-disc list-inside">
+                    <ul className="text-primary-content space-y-2 text-sm list-disc list-inside">
                         <li>You {incomeTotal > expenseTotal ? "saved money" : "spent more than you earned"} this period 💰</li>
                         <li>Active categories: {pieData.length} 📊</li>
                         <li>Total transactions analyzed: {displayedTransactions.length} 🧾</li>

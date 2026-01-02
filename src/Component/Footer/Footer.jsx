@@ -17,7 +17,7 @@ const Footer = () => {
       {/* Subscribe Bar */}
       <div
         className="
-          bg-[#708238] rounded-t-2xl 
+          bg-primary rounded-t-2xl 
           w-[90%] md:w-[80%] mx-auto 
           flex flex-col md:flex-row 
           items-center md:items-center 
@@ -29,7 +29,7 @@ const Footer = () => {
       >
         <h3
           className="
-            text-neutral font-semibold text-lg 
+            text-base-100 font-semibold text-lg 
             mb-3 md:mb-0 
             text-center md:text-left 
             w-full
@@ -54,7 +54,7 @@ const Footer = () => {
           <div
             className="
       flex flex-col md:flex-row 
-      bg-white rounded-2xl 
+      bg-base-100 rounded-2xl 
       p-2 
       gap-2 md:gap-0 
       w-full shadow-sm
@@ -76,7 +76,7 @@ const Footer = () => {
             <button
               type="submit"
               className="
-        bg-[#708238] text-white 
+        bg-primary text-base-100 
         px-6 py-3 
         font-semibold 
         rounded-xl md:rounded-l-none md:rounded-r-xl
@@ -95,16 +95,16 @@ const Footer = () => {
       {/* Main Footer */}
       <div className="max-w-6xl mx-auto px-6 pb-12 pt-8 grid grid-cols-2 sm:grid-cols-4 gap-8">
         <div>
-          <h2 className="text-primary text-3xl font-bold mb-4">Money Map</h2>
-          <p className="text-sm text-neutral leading-relaxed">
+          <h2 className="text-secondary text-3xl font-bold mb-4">Money Map</h2>
+          <p className="text-sm text-accent leading-relaxed">
             Track. Save. Grow. <br />
             Manage your finances smartly with Money Map.
           </p>
         </div>
 
         <div>
-          <h3 className="text-neutral font-semibold mb-4">RESOURCES</h3>
-          <ul className="space-y-2 text-sm text-neutral">
+          <h3 className="text-secondary font-semibold mb-4">RESOURCES</h3>
+          <ul className="space-y-2 text-sm text-accent">
             <li>Application</li>
             <li>Documentation</li>
             <li>Systems</li>
@@ -113,8 +113,8 @@ const Footer = () => {
         </div>
 
         <div>
-          <h3 className="text-neutral font-semibold mb-4">COMPANY</h3>
-          <ul className="space-y-2 text-sm text-neutral">
+          <h3 className="text-secondary font-semibold mb-4">COMPANY</h3>
+          <ul className="space-y-2 text-sm text-accent">
             <li>About Us</li>
             <li>Blog</li>
             <li>Careers</li>
@@ -123,14 +123,14 @@ const Footer = () => {
         </div>
 
         <div>
-          <h3 className="text-neutral font-semibold mb-4">SOCIAL</h3>
-          <ul className="space-y-2 text-sm text-neutral">
+          <h3 className="text-secondary font-semibold mb-4">SOCIAL</h3>
+          <ul className="space-y-2 text-sm text-accent">
             <li>Facebook</li>
             <li>Twitter</li>
             <li>Instagram</li>
             <li>LinkedIn</li>
           </ul>
-          <div className="flex gap-4 mt-4 text-lg text-neutral">
+          <div className="flex gap-4 mt-4 text-lg text-black">
             <a href="#" className="hover:text-blue-400 transition">
               <FaFacebookF />
             </a>
@@ -148,10 +148,10 @@ const Footer = () => {
       </div>
 
       {/* Bottom Line */}
-      <div className="border-t border-gray-700 py-4 text-center text-sm text-neutral">
+      <div className="border-t border-black py-4 text-center text-sm text-base-100">
         © {new Date().getFullYear()} Money Map — All rights reserved.
       </div>
-      <div className="border-t border-gray-700 py-2 text-center text-sm text-neutral">
+      <div className="border-t border-black py-2 text-center text-sm text-base-100">
         App Version: v2.1.2
       </div>
     </footer>

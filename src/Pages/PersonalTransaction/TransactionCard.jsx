@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
+import { MdOutlineModeEdit } from "react-icons/md";
+import { RiDeleteBin5Line } from "react-icons/ri";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
+import { CiViewList } from "react-icons/ci";
 
 const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions, setTotalTransaction, totalTransaction }) => {
     const axiosSecure = UseAxiosSecure();
@@ -38,8 +41,8 @@ const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions,
             text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
+            confirmButtonColor: "#4f6900",
+            cancelButtonColor: "#000000",
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
@@ -106,15 +109,15 @@ const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions,
     return (
         <>
             {/* Transaction Card */}
-            <div className="relative border border-primary/40 rounded-2xl bg-gray-900/60 backdrop-blur-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 w-full max-w-sm mx-auto">
-                <div className="p-6 flex flex-col gap-3 text-gray-100">
+            <div className="relative border border-primary/50 rounded-2xl bg-base-300/20 backdrop-blur-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 w-full max-w-sm mx-auto">
+                <div className="p-6 flex flex-col gap-3 text-primary-content">
                     <p className="text-lg flex flex-col sm:flex-row gap-1">
-                        <strong className="text-[#A3B18A] w-24">Type:</strong>
+                        <strong className="text-primary w-24">Type:</strong>
                         <span
                             className={
                                 displayType === "Income"
-                                    ? "text-green-400 font-semibold"
-                                    : "text-red-400 font-semibold"
+                                    ? "text-green-500 font-semibold"
+                                    : "text-red-500 font-semibold"
                             }
                         >
                             {displayType}
@@ -122,17 +125,17 @@ const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions,
                     </p>
 
                     <p className="text-lg flex flex-col sm:flex-row gap-1">
-                        <strong className="text-[#A3B18A] w-24">Category:</strong>
+                        <strong className="text-primary w-24">Category:</strong>
                         <span className="truncate">{currentTransaction.category}</span>
                     </p>
 
                     <p className="text-lg flex flex-col sm:flex-row gap-1">
-                        <strong className="text-[#A3B18A] w-24">Amount:</strong>
+                        <strong className="text-primary w-24">Amount:</strong>
                         <span>${currentTransaction.amount}</span>
                     </p>
 
                     <p className="text-lg flex flex-col sm:flex-row gap-1">
-                        <strong className="text-[#A3B18A] w-24">Date:</strong>
+                        <strong className="text-primary w-24">Date:</strong>
                         <span>
                             {currentTransaction.date
                                 ? new Date(currentTransaction.date).toLocaleDateString()
@@ -141,24 +144,26 @@ const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions,
                     </p>
 
                     {/* Buttons Section */}
-                    <div className="flex flex-col sm:flex-row flex-wrap gap-3 mt-5">
+                    <div className="flex gap-3 mt-5">
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="bg-blue-500/90 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition flex-1 min-w-[100px]"
+                            data-tip="Edit"
+                            className="bg-secondary/70 hover:bg-secondary text-primary-content text-xl rounded-lg transition btn btn-square tooltip before:bg-primary before:text-base-100"
                         >
-                            Update
+                            <MdOutlineModeEdit />
                         </button>
 
                         <button
                             onClick={handleDelete}
-                            className="bg-red-500/90 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition flex-1 min-w-[100px]"
+                            data-tip="Delete"
+                            className="bg-secondary/70 hover:bg-secondary text-primary-content text-xl rounded-lg transition btn btn-square tooltip before:bg-primary before:text-base-100"
                         >
-                            Delete
+                            <RiDeleteBin5Line />
                         </button>
 
                         <Link to={`/transaction-details/${transaction._id}`} className="flex-1 min-w-[100px]">
-                            <button className="bg-gray-500/90 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium transition w-full">
-                                View Details
+                            <button data-tip="View Details" className="bg-secondary/70 hover:bg-secondary text-primary-content text-xl rounded-lg transition btn btn-square tooltip before:bg-primary before:text-base-100">
+                                <CiViewList />
                             </button>
                         </Link>
                     </div>
@@ -167,16 +172,16 @@ const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions,
 
             {/* Update Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 px-4">
-                    <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 sm:p-8 w-full max-w-lg shadow-2xl relative overflow-y-auto max-h-[90vh]">
-                        <h2 className="text-2xl font-semibold text-white mb-6 text-center">
+                <div className="fixed inset-0 bg-primary/30 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+                    <div className="bg-base-200 border border-secondary rounded-2xl p-6 sm:p-8 w-full max-w-lg shadow-2xl relative overflow-y-auto max-h-[90vh]">
+                        <h2 className="text-2xl font-semibold text-base-100 mb-6 text-center">
                             Update Transaction
                         </h2>
 
                         <form onSubmit={handleUpdate} className="flex flex-col gap-4">
                             {/* Type */}
                             <div>
-                                <label className="text-white block mb-1">Type</label>
+                                <label className="text-base-100 block mb-1">Type</label>
                                 <select
                                     name="type"
                                     value={formData.type.toLowerCase()}
@@ -187,7 +192,7 @@ const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions,
                                             category: "",
                                         })
                                     }
-                                    className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
+                                    className="w-full p-2 rounded-lg bg-secondary text-base-100 border border-neutral"
                                 >
                                     <option value="income">Income</option>
                                     <option value="expense">Expense</option>
@@ -196,14 +201,14 @@ const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions,
 
                             {/* Category */}
                             <div>
-                                <label className="text-white block mb-1">Category</label>
+                                <label className="text-base-100 block mb-1">Category</label>
                                 <select
                                     name="category"
                                     value={formData.category}
                                     onChange={(e) =>
                                         setFormData({ ...formData, category: e.target.value })
                                     }
-                                    className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
+                                    className="w-full p-2 rounded-lg bg-secondary text-base-100 border border-neutral"
                                 >
                                     <option value="">Select Category</option>
                                     {categories.map((cat) => (
@@ -216,7 +221,7 @@ const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions,
 
                             {/* Amount */}
                             <div>
-                                <label className="text-white block mb-1">Amount</label>
+                                <label className="text-base-100 block mb-1">Amount</label>
                                 <input
                                     type="number"
                                     name="amount"
@@ -224,27 +229,27 @@ const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions,
                                     onChange={(e) =>
                                         setFormData({ ...formData, amount: e.target.value })
                                     }
-                                    className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
+                                    className="w-full p-2 rounded-lg bg-secondary text-base-100 border border-neutral"
                                 />
                             </div>
 
                             {/* Description */}
                             <div>
-                                <label className="text-white block mb-1">Description</label>
+                                <label className="text-base-100 block mb-1">Description</label>
                                 <textarea
                                     name="description"
                                     value={formData.description}
                                     onChange={(e) =>
                                         setFormData({ ...formData, description: e.target.value })
                                     }
-                                    className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
+                                    className="w-full p-2 rounded-lg bg-secondary text-base-100 border border-neutral"
                                     rows="2"
                                 ></textarea>
                             </div>
 
                             {/* Date */}
                             <div>
-                                <label className="text-white block mb-1">Date</label>
+                                <label className="text-base-100 block mb-1">Date</label>
                                 <input
                                     type="date"
                                     name="date"
@@ -252,7 +257,7 @@ const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions,
                                     onChange={(e) =>
                                         setFormData({ ...formData, date: e.target.value })
                                     }
-                                    className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
+                                    className="w-full p-2 rounded-lg bg-secondary text-base-100 border border-neutral"
                                 />
                             </div>
 
@@ -261,13 +266,13 @@ const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions,
                                 <button
                                     type="button"
                                     onClick={() => setIsModalOpen(false)}
-                                    className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto"
+                                    className="bg-neutral/70 hover:bg-neutral text-base-100 px-4 py-2 rounded-lg w-full sm:w-auto"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto"
+                                    className="bg-secondary/70 hover:bg-secondary text-primary-content px-4 py-2 rounded-lg w-full sm:w-auto"
                                 >
                                     Update
                                 </button>

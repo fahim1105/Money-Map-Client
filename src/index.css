@@ -1,46 +1,65 @@
 @import url('https://fonts.googleapis.com/css2?family=Domine:wght@400..700&display=swap');
 @import "tailwindcss";
-@plugin "daisyui";
 
-@plugin "daisyui/theme" {
-  name: "finEase";
-  default: true;
 
-  /* 🌿 Brand & Core */
-  --color-primary: #708238;
-  /* → Olive Green (main brand color: use for navbar background, buttons, highlights) */
-  --color-secondary: #A3B18A;
-  /* → Light Olive for accents, hover states, or highlights */
-  --color-accent: #D4A373;
-  /* → Warm beige accent (for CTA icons, subtle highlights) */
+@plugin "daisyui" {
 
-  /* 🎨 Backgrounds */
-  --color-base-100: #F9FAF8;
-  /* → Page background (off-white, slightly warm) */
-  --color-base-200: #FFFFFF;
-  /* → Card or section background */
-  --color-base-300: #E5E7EB;
-  /* → Border, divider, or muted background */
+  themes: light --default;
 
-  /* 📝 Text Colors */
-  --color-neutral: #1A1A1A;
-  /* → Primary text (dark neutral for readability) */
-
-  /* ⚡ Status Colors */
-  --color-info: #3B82F6;
-  /* → Info Blue (default) */
-  --color-success: #4CAF50;
-  /* → Fresh Green (success) */
-  --color-warning: #EAB308;
-  /* → Golden Yellow (warning) */
-  --color-error: #DC2626;
-  /* → Deep Red (error) */
-
-  /* 🧈 Gradient Button */
-  --btn-gradient: linear-gradient(90deg, #708238 0%, #A3B18A 100%);
-  /* → Gradient from deep olive to light olive for CTA buttons (e.g., Login button) */
 }
 
+/* Light Theme: Fresh Olive & Pale Leaf */
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+
+  --color-primary: #4f6900;
+  /* --color-primary: #c1d18f; */
+  /* Apnar deya base color */
+  --color-primary-content: #0a0b08;
+  /* Contrast text for primary button */
+
+  --color-secondary: #8da16d;
+  /* Muted Sage */
+  --color-accent: #d4a373;
+  /* Earthy Sand/Tan */
+
+  --color-neutral: #1a1c16;
+
+  /* Dark Mossy Black for text */
+
+  --color-base-100: #fcfdfa;
+  /* Clean White with a hint of green */
+  --color-base-200: #696969;
+
+  /* Subtle Sidebar/Card color */
+  --color-base-300: #f6ffe6;
+  /* Borders and Dividers */
+}
+
+/* Dark Theme: Deep Forest & Neon Lime */
+@plugin "daisyui/theme" {
+  name: "dark";
+
+  --color-primary: #c1d18f;
+  /* Primary color fixed for branding */
+  --color-primary-content: #e4e6e0;
+
+  --color-secondary: #357930;
+  /* Deep Forest Green */
+  --color-accent: #544829;
+  /* Dark Gold/Bronze */
+
+  --color-neutral: #efffef;
+  /* Near White for dark mode text */
+
+  --color-base-100: #0f120f;
+  /* Deep Night Green background */
+  --color-base-200: #4B5563;
+  /* Card/Section background */
+  --color-base-300: #242b24;
+  /* Subtle Borders */
+}
 
 
 * {

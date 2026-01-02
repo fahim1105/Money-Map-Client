@@ -54,7 +54,7 @@ const PersonalTransaction = () => {
     if (!totalTransaction) {
         return (
             <div className="min-h-screen flex flex-col justify-center items-center text-center px-4">
-                <h2 className="text-3xl font-bold text-gray-300">No Transactions Found</h2>
+                <h2 className="text-3xl font-bold text-base-100">No Transactions Found</h2>
             </div>
         );
     }
@@ -71,7 +71,7 @@ const PersonalTransaction = () => {
         <div className="min-h-screen pb-20">
             {/* Header */}
             <div className="py-16">
-                <h2 className="text-4xl font-bold text-center text-gray-100">
+                <h2 className="text-4xl font-bold text-center text-primary-content">
                     My Transactions
                 </h2>
             </div>
@@ -79,14 +79,14 @@ const PersonalTransaction = () => {
             {/* Count + Sort + Month Filter */}
             <div className="w-11/12 mx-auto flex flex-col-reverse lg:flex-row gap-5 items-start justify-between lg:items-end mt-10">
                 <div>
-                    <h2 className="text-lg font-bold text-gray-300">
+                    <h2 className="text-lg font-bold text-primary-content">
                         Total Transaction: {totalTransaction}
                     </h2>
                 </div>
 
                 <div className="flex gap-3 flex-wrap">
                     {/* Sort */}
-                    <select onChange={handleSelect} className="select bg-[#708238] text-neutral">
+                    <select onChange={handleSelect} className="select bg-primary text-base-100">
                         <option selected disabled>Sort by</option>
                         <option value="amount-desc">Amount: High → Low</option>
                         <option value="amount-asc">Amount: Low → High</option>
@@ -98,7 +98,7 @@ const PersonalTransaction = () => {
                     <select
                         value={filteredMonth}
                         onChange={(e) => setFilteredMonth(e.target.value)}
-                        className="select bg-[#708238] text-neutral"
+                        className="select bg-primary text-base-100"
                     >
                         <option value="">All Months</option>
                         {
@@ -137,7 +137,7 @@ const PersonalTransaction = () => {
                 {currentPage > 0 && (
                     <button
                         onClick={() => setCurrentPage(currentPage - 1)}
-                        className="btn bg-[#A3B18A] border-neutral"
+                        className="btn bg-primary border-neutral text-base-100"
                     >
                         <FaArrowLeft /> Prev
                     </button>
@@ -147,7 +147,7 @@ const PersonalTransaction = () => {
                     <button
                         key={i}
                         onClick={() => setCurrentPage(i)}
-                        className={`btn ${i === currentPage ? "bg-[#D4A373]" : ""}`}
+                        className={`btn ${i === currentPage ? "bg-accent" : " bg-base-100"}`}
                     >
                         {i + 1}
                     </button>
@@ -156,7 +156,7 @@ const PersonalTransaction = () => {
                 {currentPage < totalPage - 1 && (
                     <button
                         onClick={() => setCurrentPage(currentPage + 1)}
-                        className="btn bg-[#A3B18A] border-neutral"
+                        className="btn bg-primary border-neutral text-base-100"
                     >
                         Next <FaArrowRight />
                     </button>

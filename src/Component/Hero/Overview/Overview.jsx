@@ -39,7 +39,7 @@ const OverviewSection = () => {
     };
 
     return (
-        <div className="relative overflow-hidden px-4 py-10 pb-15 bg-transparent">
+        <div className="relative overflow-hidden px-4 py-10 pb-15 bg-transparent mt-15">
             {/* Glowing background orbs */}
             <div className="absolute top-0 left-0 w-48 h-48 sm:w-64 sm:h-64 bg-green-500/10 rounded-full blur-3xl"></div>
             <div className="absolute bottom-0 right-0 w-56 h-56 sm:w-72 sm:h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
@@ -48,7 +48,7 @@ const OverviewSection = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
-                className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white/90 mb-8 text-center tracking-wide"
+                className="text-2xl sm:text-3xl md:text-4xl font-semibold text-primary-content/90 mb-8 text-center tracking-wide"
             >
                 Financial Overview
             </motion.h2>

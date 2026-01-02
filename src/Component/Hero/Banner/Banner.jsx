@@ -48,42 +48,41 @@ const Banner = () => {
   ];
 
   return (
-    <section className="w-full text-white">
+    <section className="w-full text-white ">
       <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
-        navigation
+        modules={[Pagination, Autoplay]}
         pagination={{ clickable: true }}
-        autoplay={{ delay: 4000, disableOnInteraction: false }}
+        autoplay={{ delay: 4500, disableOnInteraction: false }}
         loop
-        className="w-full h-[70vh] sm:h-[80vh] md:h-[90vh] lg:h-screen overflow-hidden"
+        className="w-full h-[70vh] sm:h-[80vh] md:h-[60vh] overflow-hidden"
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
             <div
-              className="relative flex justify-center items-center h-full bg-cover bg-center bg-no-repeat"
+              className="relative flex justify-center items-center h-full  bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: `url(${slide.img})`,
               }}
             >
               {/* Overlay */}
-              <div className="absolute inset-0 bg-black/60"></div>
+              <div className="absolute inset-0 bg-base-100/50"></div>
 
               {/* Text Content */}
               <div
                 className="relative z-10 text-center px-4 sm:px-6 md:px-10 max-w-3xl mx-auto"
                 data-aos="fade-up"
               >
-                <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 sm:mb-6">
+                <h1 className="text-2xl text-neutral/90 sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 sm:mb-6">
                   {slide.title}
                 </h1>
 
-                <p className="text-sm text-white sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8">
+                <p className="text-sm text-neutral/90 sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8">
                   {slide.subtitle}
                 </p>
 
                 <Link
                   to="/add-transition"
-                  className="inline-block px-6 sm:px-8 py-2.5 sm:py-3 rounded-full text-sm sm:text-lg font-semibold text-white shadow-md hover:shadow-xl transition-transform transform hover:scale-105"
+                  className="inline-block px-6 sm:px-8 py-2.5 sm:py-3 rounded-full text-sm sm:text-lg font-semibold text-primary-content shadow-md hover:shadow-xl transition-transform transform hover:scale-105"
                   style={{
                     background:
                       "linear-gradient(90deg, #708238 0%, #A3B18A 100%)",
