@@ -1,176 +1,220 @@
-import React, { use, useState } from 'react';
-import { FaEye, FaGoogle } from 'react-icons/fa';
-import { IoEyeOffSharp } from 'react-icons/io5';
-import { Link, useNavigate } from 'react-router';
-import toast from 'react-hot-toast';
-import { AuthContext } from '../../Provider/AuthContext/AuthContext';
+import React, { use, useState } from "react";
+import { useForm } from "react-hook-form";
+import { FcGoogle } from "react-icons/fc";
+import { Link, useLocation, useNavigate } from "react-router";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { AuthContext } from "../../Provider/AuthContext/AuthContext";
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
+import { BiHide, BiShow } from "react-icons/bi";
 
 const Register = () => {
-    const [showPassword, setShowPassword] = useState(false);
-    const [nameError, setNameError] = useState("");
-    const [error, setError] = useState("")
-
-    const [passwordError, setPasswordError] = useState("");
+    const { register, handleSubmit, formState: { errors }, watch } = useForm();
+    const { registerUser, signInGoogle, updateUserProfile } = use(AuthContext);
+    const [loading, setLoading] = useState(false);
+    const location = useLocation();
     const navigate = useNavigate();
-    const { createUser, UpdatedUser, setUser, signInWithGoogle } = use(AuthContext);
+    const axiosSecure = UseAxiosSecure();
+    const [showPassword, setShowPassword] = useState(false);
 
-    const handleResister = (event) => {
-        event.preventDefault();
-        const form = event.target;
-        const name = form.name.value;
-        const photo = form.photo.value;
-        const email = form.email.value;
-        const password = form.password.value;
 
-        //  Name validation
-        if (name.length < 4) {
-            setNameError("Name should be more than 4 characters");
-            return;
-        } else {
-            setNameError("");
+    const from = location?.state || "/";
+    const photoFile = watch("photo");
+
+    const handleRegister = async (data) => {
+        setLoading(true);
+        const toastId = toast.loading("Creating your account...");
+
+        try {
+            const formData = new FormData();
+            formData.append("image", data.photo[0]);
+            const img_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_Host_Key}`;
+            const imgRes = await axios.post(img_API_URL, formData);
+            const photoURL = imgRes.data.data.url;
+
+            await registerUser(data.email, data.password);
+            await updateUserProfile({ displayName: data.name, photoURL });
+
+            const userInfo = {
+                email: data.email,
+                displayName: data.name,
+                photoURL,
+                role: "user",
+                createdAt: new Date(),
+            };
+
+            await axiosSecure.post("/users", userInfo);
+            toast.success("Welcome! Registration Successful", { id: toastId });
+            navigate(from, { replace: true });
+
+        } catch (error) {
+            console.error(error);
+            toast.error(error?.message || "Registration failed!", { id: toastId });
+        } finally {
+            setLoading(false);
         }
-        // pass validation
-        if (!/[A-Z]/.test(password)) {
-            setPasswordError("Password must contain at least one uppercase letter");
-            return;
-        }
-        if (!/[a-z]/.test(password)) {
-            setPasswordError("Password must contain at least one lowercase letter");
-            return;
-        }
-        if (password.length < 6) {
-            setPasswordError("Password must be at least 6 characters long");
-            return;
-        }
-        setPasswordError("");
-
-
-
-        //  Firebase
-        createUser(email, password)
-            .then(result => {
-                const user = result.user;
-                toast.success("Successfully Created Account");
-                UpdatedUser({ displayName: name, photoURL: photo })
-                    .then(() => {
-                        setUser({ ...user, displayName: name, photoURL: photo });
-                        navigate('/');
-                    })
-                    .catch(error => {
-                        const errorCode = error.code;
-                        toast.error(errorCode);
-                        setUser(user);
-                    });
-            })
-            .catch(error => {
-                const errorMessage = error.message;
-                toast.error(errorMessage);
-            });
     };
-    const handleLoginWithGoogle = () => {
-        signInWithGoogle()
-            .then(result => {
-                console.log(result)
-                navigate(location.state || '/')
-            })
-            .catch(error => {
-                // console.log(error)
-                const errorCode = error.code;
-                setError(errorCode)
-            })
-    }
+
+    // --- ফিক্সড গুগল লগইন ফাংশন ---
+    const handleGoogleLogin = async () => {
+        try {
+            const result = await signInGoogle();
+            const user = result?.user;
+
+            const userInfo = {
+                email: user?.email,
+                displayName: user?.displayName,
+                photoURL: user?.photoURL,
+                role: "user",
+                createdAt: new Date(),
+            };
+
+            // ডাটাবেসে ইউজার পাঠানোর সময় catch ব্যবহার করেছি যাতে ইউজার আগে থেকে থাকলেও লগইন হয়ে যায়
+            await axiosSecure.post('/users', userInfo)
+                .catch(err => console.log("User might already exist in DB", err));
+
+            toast.success("Google Login Successful!");
+            navigate(from, { replace: true });
+        } catch (error) {
+            console.error("Google Login Error:", error);
+            toast.error(error?.message || "Google Login Failed!");
+        }
+    };
 
     return (
-        <div className="flex items-center justify-center min-h-screen  px-4">
-            <form onSubmit={handleResister} className="bg-base-100 shadow-2xl rounded-2xl px-8 py-8 w-full max-w-sm">
-                <h1 className="text-3xl font-bold text-center text-primary mb-8">
-                    Register
-                </h1>
+        <div className="min-h-screen flex items-center justify-center px-4 py-10">
+            <div className="w-full max-w-md bg-primary-content p-8 rounded-3xl shadow-xl border border-base-100">
 
-                {/* Name */}
-                <div className="mb-5">
-                    <input
-                        type="text"
-                        placeholder="Your Name"
-                        name="name"
-                        required
-                        className="w-full px-4 py-3 border border-secondary rounded-xl focus:outline-none placeholder:text-primary focus:ring-2 focus:ring-primary-content"
-                    />
-                    {nameError && <p className="font-semibold text-red-500 text-xs mt-2">{nameError}</p>}
+                <div className="text-center mb-8">
+                    <h1 className="text-3xl font-bold text-base-100">Create Account</h1>
+                    <p className="text-base-100 mt-2">Join <span className="text-lg font-bold tracking-tight text-gray-500">
+                        Money<span className="text-secondary">Map</span>
+                    </span> & start your journey</p>
                 </div>
 
-                {/* Photo URL */}
-                <div className="mb-5">
-                    <input
-                        type="text"
-                        placeholder="Your Photo URL"
-                        name="photo"
-                        required
-                        className="w-full px-4 py-3 border border-secondary rounded-xl placeholder:text-primary focus:outline-none focus:ring-2 focus:ring-primary-content"
-                    />
-                </div>
+                <form onSubmit={handleSubmit(handleRegister)} className="space-y-5">
+                    {/* Name */}
+                    <div>
+                        <label className="block text-sm font-semibold text-base-100 mb-1">Full Name</label>
+                        <input
+                            type="text"
+                            {...register("name", { required: "Name is required" })}
+                            placeholder="John Doe"
+                            className="w-full px-4 py-2.5 border border-base-300 rounded-xl focus:ring-2 focus:ring-primary placeholder:text-secondary focus:outline-none transition-all"
+                        />
+                        {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+                    </div>
 
-                {/* Email */}
-                <div className="mb-5">
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        required
-                        className="w-full px-4 py-3 border border-primary rounded-xl placeholder:text-primary focus:outline-none focus:ring-2 focus:ring-primary-content"
-                    />
-                </div>
+                    {/* --- কাস্টম ফটো সেকশন (ডিফল্ট টেক্সট ছাড়া) --- */}
+                    <div>
+                        <label className="block text-sm font-semibold text-base-100 mb-1">Profile Photo</label>
+                        <div className="flex items-center gap-4">
+                            <label
+                                htmlFor="photo-upload"
+                                className="px-4 py-2 bg-base-100 text-primary-content border border-dashed border-primary/50 rounded-xl cursor-pointer hover:bg-primary/20 transition-all text-sm font-medium"
+                            >
+                                Choose Image
+                            </label>
+                            <input
+                                id="photo-upload"
+                                type="file"
+                                accept="image/*"
+                                {...register("photo", { required: "Photo is required" })}
+                                className="hidden" // এটিই "No file chosen" হাইড করেছে
+                            />
 
-                {/* Password */}
-                <div className="mb-5 relative">
-                    <input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Password"
-                        name="password"
-                        required
-                        className="w-full px-4 py-3 border border-secondary rounded-xl placeholder:text-primary focus:outline-none focus:ring-2 focus:ring-primary-content"
-                    />
-                    <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-4 text-gray-500 hover:text-base-300"
-                    >
-                        {showPassword ? <IoEyeOffSharp /> : <FaEye />}
-                    </button>
-                    <p className='font-semibold mt-1 text-xs my3 text-red-400'>
-                        {error}
-                    </p>
-                    {passwordError && <p className="font-semibold text-red-500 text-xs mt-2">{passwordError}</p>}
-                </div>
+                            <div className="h-12 w-12 rounded-full bg-base-100 overflow-hidden border-2 border-primary/20 ml-auto">
+                                {photoFile?.[0] ? (
+                                    <img src={URL.createObjectURL(photoFile[0])} alt="preview" className="h-full  w-full object-cover" />
+                                ) : (
+                                    <div className="h-full w-full flex items-center justify-center text-primary-content text-[10px]">No Pic</div>
+                                )}
+                            </div>
+                        </div>
+                        {errors.photo && <p className="text-red-500 text-xs mt-1">{errors.photo.message}</p>}
+                    </div>
 
-                {/* Register Button */}
-                <button
-                    type="submit"
-                    className="w-full bg-primary/80 text-base-100 py-3 rounded-xl hover:bg-primary transition duration-200 font-semibold"
-                >
-                    Register
-                </button>
-                <button
-                    onClick={handleLoginWithGoogle}
-                    type="submit"
-                    className="w-full flex justify-center items-center gap-2 bg-white border-1 mt-2 text-[#D4A373] hover:text-white py-3 rounded-xl hover:bg-[#D4A373] transition duration-200 font-semibold"
-                >
-                    <FaGoogle />
-                    Login With Google
-                </button>
+                    {/* Email */}
+                    <div>
+                        <label className="block text-sm font-semibold text-base-300 mb-1">Email Address</label>
+                        <input
+                            type="email"
+                            {...register("email", { required: "Email is required" })}
+                            placeholder="example@mail.com"
+                            className="w-full px-4 py-2.5 border border-base-200 placeholder:text-secondary rounded-xl focus:ring-2 focus:ring-primary/50 focus:outline-none transition-all"
+                        />
+                        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+                    </div>
 
-                {/* Login Link */}
-                <div className="text-center mt-6 text-primary-content text-sm">
-                    <p>
-                        Already have an account?{" "}
-                        <Link to="/auth/login">
-                            <button className="text-primary font-semibold hover:underline">
-                                Login
+                    {/* Password */}
+                    <div>
+                        <label className="block text-sm font-semibold text-base-100 mb-1">
+                            Password
+                        </label>
+
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                {...register("password", {
+                                    required: "Password is required",
+                                    minLength: { value: 6, message: "At least 6 characters" },
+                                    pattern: {
+                                        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                                        message: "Must include Uppercase, Lowercase, Number & Symbol"
+                                    }
+                                })}
+                                placeholder="••••••••"
+                                className="w-full px-4 py-2.5 pr-12 border text-secondary border-base-200 rounded-xl focus:ring-2 focus:ring-primary/40 focus:outline-none transition-all"
+                            />
+
+                            {/* Show / Hide Button */}
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-secondary font-semibold"
+                            >
+                                {showPassword ? <BiHide /> : <BiShow />}
                             </button>
-                        </Link>
+                        </div>
+
+                        {errors.password && (
+                            <p className="text-red-500 text-xs mt-1">
+                                {errors.password.message}
+                            </p>
+                        )}
+                    </div>
+
+                    <button
+                        disabled={loading}
+                        type="submit"
+                        className={`w-full py-3 rounded-xl font-bold text-neutral transition-all ${loading ? 'bg-accent cursor-not-allowed' : 'bg-secondary/80 hover:bg-secondary shadow-lg text-primary-content shadow-primary/20'}`}
+                    >
+                        {loading ? "Processing..." : "Create Account"}
+                    </button>
+                </form>
+
+                <div className="mt-6 text-center">
+                    <p className="text-gray-500 text-sm">
+                        Already have an account?{" "}
+                        <Link state={from} to="/auth/login" className="text-secondary/90 font-bold hover:underline">Login</Link>
                     </p>
                 </div>
-            </form>
+
+                <div className="flex items-center gap-4 my-6">
+                    <div className="flex-1 h-px bg-base-200"></div>
+                    <span className="text-base-300 text-xs font-medium uppercase">Or continue with</span>
+                    <div className="flex-1 h-px bg-base-200"></div>
+                </div>
+
+                <button
+                    type="button" // Type button দেওয়া হয়েছে যাতে ফর্ম সাবমিট না হয়ে যায়
+                    onClick={handleGoogleLogin}
+                    className="w-full flex items-center justify-center gap-3 bg-white border border-base-200 py-2.5 rounded-xl hover:bg-base-100 transition-all font-medium text-base-300"
+                >
+                    <FcGoogle size={24} />
+                    <span className="text-black">Register with Google</span>
+                </button>
+            </div>
         </div>
     );
 };

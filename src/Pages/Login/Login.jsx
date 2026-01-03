@@ -1,184 +1,137 @@
-import React, { use, useRef, useState } from 'react';
-import { FaEye, FaGoogle } from 'react-icons/fa';
-import { IoEyeOffSharp } from 'react-icons/io5';
-import { Link, useLocation, useNavigate } from 'react-router';
-import toast from 'react-hot-toast';
-import { AuthContext } from '../../Provider/AuthContext/AuthContext';
-import UseAxiosSecure from '../../Hooks/UseAxiosSecure/UseAxiosSecure';
-
+import React, { use, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useLocation, useNavigate } from "react-router";
+import toast from "react-hot-toast"; // ১. টোস্ট ইম্পোর্ট
+import { AuthContext } from "../../Provider/AuthContext/AuthContext";
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
+import { BiHide, BiShow } from "react-icons/bi";
 
 const Login = () => {
-    const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState("")
+    const { register, formState: { errors }, handleSubmit } = useForm();
+    // const { signinUser, signInGoogle } = UseAuth();
+    const { signInUser, signInWithGoogle } = use(AuthContext)
+    const location = useLocation();
+    const navigate = useNavigate();
     const axiosSecure = UseAxiosSecure();
-    const emailRef = useRef()
+    const [showPassword, setShowPassword] = useState(false);
 
-    const { signInUser, signInWithGoogle, forgetPassword } = use(AuthContext)
-    const location = useLocation()
-    // console.log(location)
-    const navigate = useNavigate()
+    // রিডাইরেক্ট পাথ নির্ধারণ
+    const from = location?.state || '/';
 
-    const handleLogin = (event) => {
-        event.preventDefault()
-        const form = event.target;
-        const email = form.email.value;
-        const password = form.password.value;
-        // console.log(email, password)
-
-        signInUser(email, password)
-            .then((result) => {
-                const user = result.user;
-                console.log(user)
-                event.target.reset()
-                toast.success("Successfully Login")
-                navigate(location.state || '/')
-
-                const newUser = {
-                    name: user.displayName || "Anonymous",
-                    email: user.email,
-                    photoURL: user.photoURL || null,
-                }
-                axiosSecure.post("/users", newUser)
-                    .then(res => {
-                        console.log("Response Here", res)
-                    })
-                    .catch(err => {
-                        console.log("Error here", err)
-                    })
-
+    // ইমেইল-পাসওয়ার্ড লগইন
+    const handleLogin = (data) => {
+        signInUser(data.email, data.password)
+            .then(() => {
+                toast.success("Successfully Logged In!"); // ২. সাকসেস টোস্ট
+                navigate(from, { replace: true }); // ৩. সঠিক পেজে রিডাইরেক্ট
             })
             .catch((error) => {
-                const errorCode = error.code;
-                setError(errorCode)
+                console.error(error);
+                toast.error(error?.message || "Invalid Email or Password"); // ৪. এরর টোস্ট
             });
     }
-    const handleLoginWithGoogle = () => {
+
+    // গুগল লগইন
+    const handleGoogleLogin = () => {
         signInWithGoogle()
             .then((result) => {
-                // console.log(result)
-                const user = result.user
-                navigate(location.state || '/')
+                // toast.success("Successfully Logged In!");
+                const userInfo = {
+                    email: result.user.email,
+                    displayName: result.user.displayName,
+                    photoURL: result.user.photoURL,
+                };
 
-                const newUser = {
-                    name: user.displayName || "Anonymous",
-                    email: user.email,
-                    photoURL: user.photoURL || null,
-                }
-                axiosSecure.post("/users", newUser)
-                    .then(res => {
-                        console.log("Response Here for Google", res)
+                // ডাটাবেসে ইউজার সেভ করা
+                axiosSecure.post('/users', userInfo)
+                    .then((res) => {
+                        toast.success("Google Login Successful!");
+                        navigate(from, { replace: true });
                     })
                     .catch(err => {
-                        console.log("Error here for Google", err)
-                    })
-            })
-            .catch(error => {
-                // console.log(error)
-                const errorCode = error.code;
-                setError(errorCode)
-            })
-    }
-    const handleForgetPassword = (e) => {
-        e.preventDefault()
-        const email = emailRef.current.value;
-        forgetPassword(email)
-            .then(() => {
-                toast((t) => (
-                    <span>
-                        Please Check Your <b>Email</b>
-                        <button
-                            onClick={() => toast.dismiss(t.id)}
-                            className="ml-2 text-blue-500 hover:underline"
-                        >
-                            Dismiss
-                        </button>
-                    </span>
-                ));
+                        // যদি ইউজার আগে থেকেই থাকে তাও রিডাইরেক্ট হবে
+                        navigate(from, { replace: true });
+                    });
 
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                console.log(errorCode)
-            })
+            }).catch((error) => {
+                toast.error("Google Login Failed!");
+                console.log(error.message);
+            });
     }
+
     return (
-        <div className="flex items-center justify-center min-h-screen">
-            <div className='bg-base-100 shadow-2xl rounded-2xl px-10 py-8 w-full max-w-sm'>
-                <form onSubmit={handleLogin} >
-                    <h1 className="text-3xl font-bold text-center text-primary mb-8">
-                        Login
-                    </h1>
+        <div className="min-h-screen flex items-center justify-center px-4">
+            <div className="w-full max-w-sm bg-primary-content p-8 rounded-2xl shadow">
+                <h1 className="text-3xl text-base-100 font-bold mb-1">Welcome Back</h1>
+                <p className="text-base-100 mb-6">Login with <span className="text-lg font-bold tracking-tight text-gray-500">
+                    Money<span className="text-secondary">Map</span>
+                </span></p>
 
-                    {/* email */}
-                    <div className="mb-5">
+                <form onSubmit={handleSubmit(handleLogin)}>
+                    <fieldset>
+                        <label className="block text-sm font-medium text-base-100 mb-1">Email</label>
                         <input
                             type="email"
-                            ref={emailRef}
-                            placeholder="Your Email"
-                            name='email'
-                            required
-                            className="w-full px-4 py-3 border border-secondary placeholder:text-primary rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-content"
+                            {...register("email", { required: "Email is required" })}
+                            placeholder="Email"
+                            className="w-full px-3 py-2 mb-1 border text-secondary rounded-lg focus:outline-none focus:ring focus:ring-primary"
                         />
-                    </div>
+                        {errors.email && <p className="text-red-500 text-xs mb-3">{errors.email.message}</p>}
+                        <label className="block text-sm font-medium text-base-100 mb-1">
+                            Password
+                        </label>
 
-                    {/* Password with toggle */}
-                    <div className="mb-5 relative">
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Password"
-                            required
-                            name='password'
-                            className="w-full px-4 py-3 border border-secondary rounded-xl placeholder:text-primary focus:outline-none focus:ring-2 focus:ring-primary-content"
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-4 top-5 text-gray-500 hover:text-base-300 text-sm"
-                        >
-                            {showPassword ? <IoEyeOffSharp /> : <FaEye />}
-                        </button>
-                    </div>
-                    <p className='font-semibold mt-1 text-xs my3 text-red-400'>
-                        {error}
-                    </p>
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                {...register("password", {
+                                    required: "Password is required",
+                                    minLength: { value: 6, message: "Min 6 characters required" }
+                                })}
+                                placeholder="Password"
+                                className="w-full px-3 py-2 pr-12 mb-1 border rounded-lg text-secondary focus:outline-none focus:ring focus:ring-primary"
+                            />
 
-                    {/* Remember and Forgot */}
-                    <div onClick={handleForgetPassword} className="flex items-center justify-between text-sm mb-6">
-
-                        <button className="text-primary hover:underline">
-                            Forgot password?
-                        </button>
-                    </div>
-
-                    {/* Login Button */}
-                    <button
-                        type="submit"
-                        className="w-full bg-primary/80 text-base-100 py-3 rounded-xl hover:bg-primary transition duration-200 font-semibold"
-                    >
-                        Login
-                    </button>
-                </form>
-                {/* Google Login */}
-                <button
-                    onClick={handleLoginWithGoogle}
-                    type="submit"
-                    className="w-full flex justify-center items-center gap-2 bg-white border-1 mt-2 text-[#D4A373] hover:text-white py-3 rounded-xl hover:bg-[#D4A373] transition duration-200 font-semibold"
-                >
-                    <FaGoogle />
-                    Login With Google
-                </button>
-
-                {/* Register Link */}
-                <div className="text-center mt-6 text-sm">
-                    <p>
-                        Don't have an account?{" "}
-                        <Link to="/auth/register">
-                            <button className="text-primary font-semibold hover:underline">
-                                Register
+                            {/* Show / Hide button */}
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-secondary"
+                            >
+                                {showPassword ? <BiHide /> : <BiShow />}
                             </button>
-                        </Link>
+                        </div>
+
+                        {errors.password && (
+                            <p className="text-red-500 text-xs mb-3">
+                                {errors.password.message}
+                            </p>
+                        )}
+
+                        <p className="text-sm text-secondary cursor-pointer mb-4">Forget Password?</p>
+
+                        <button type="submit" className="w-full py-2 rounded-lg bg-secondary/80 font-semibold text-base-100 hover:bg-secondary transition">
+                            Login
+                        </button>
+                    </fieldset>
+                </form>
+
+                <Link state={from} to="/auth/register">
+                    <p className="text-sm text-base-100 mt-4">
+                        Don’t have any account? <span className="text-secondary cursor-pointer">Register</span>
                     </p>
+                </Link>
+
+                <div className="flex items-center gap-2 my-4">
+                    <div className="flex-1 h-px bg-base-100"></div>
+                    <span className="text-base-100 text-sm">Or</span>
+                    <div className="flex-1 h-px bg-base-100"></div>
                 </div>
+
+                <button onClick={handleGoogleLogin} className="w-full text-black flex items-center justify-center gap-2 py-2 border rounded-lg bg-white transition">
+                    <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" className="w-5 h-5" />
+                    Login with Google
+                </button>
             </div>
         </div>
     );

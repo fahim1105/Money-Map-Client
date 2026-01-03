@@ -19,6 +19,8 @@ import Press from '../Pages/Press/Press';
 import Systems from '../Pages/System/System';
 import Documentation from '../Pages/Documentation/Documentation';
 import DashboardLayout from '../Layout/DashboardLayout/DashboardLayout';
+import ManageUsers from '../Pages/ManageUsers/ManageUser';
+import UserProfile from '../Pages/UserProfile/UserProfile';
 
 export const router = createBrowserRouter([
     {
@@ -100,9 +102,17 @@ export const router = createBrowserRouter([
                 path:"my-transitions",
                 Component:PersonalTransaction
             },
+            // {
+            //     path:"my-profile",
+            //     Component:Profile
+            // },
             {
                 path:"my-profile",
-                Component:Profile
+                Component:UserProfile
+            },
+            {
+                path:"manage-users",
+                Component:ManageUsers
             }
 
         ]

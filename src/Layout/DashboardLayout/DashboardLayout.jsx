@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 import { CgProfile } from "react-icons/cg";
 import { FaCcMastercard } from 'react-icons/fa6';
+import { MdManageAccounts } from 'react-icons/md';
 
 const DashboardLayout = () => {
     return (
@@ -50,6 +51,21 @@ const DashboardLayout = () => {
                                 to="/dashboard/my-transitions">
                                 <FaCcMastercard className="my-1.5 inline-block size-4"> </FaCcMastercard >
                                 <span className="is-drawer-close:hidden">My Transaction</span>
+                            </NavLink>
+                        </li>
+
+                        {/* Manage Users */}
+                        <li>
+                            <NavLink
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "bg-primary text-accent is-drawer-close:tooltip is-drawer-close:tooltip-right block before:bg-gray-900"
+                                        : "hover:text-black is-drawer-close:tooltip is-drawer-close:tooltip-right block before:bg-gray-900"
+                                }
+                                data-tip="Manage Users"
+                                to="/dashboard/manage-users">
+                                <MdManageAccounts className="my-1.5 inline-block size-4"> </MdManageAccounts >
+                                <span className="is-drawer-close:hidden">Manage Users</span>
                             </NavLink>
                         </li>
 
