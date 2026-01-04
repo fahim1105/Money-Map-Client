@@ -149,7 +149,7 @@ const Reports = () => {
                 <div className="grid md:grid-cols-2 gap-10 mb-12">
                     {/* Pie Chart */}
                     <div className="bg-primary-content/10 border border-primary-content/20 rounded-2xl p-6 shadow-md backdrop-blur-xl">
-                        <h3 className="text-lg font-semibold mb-4 text-center text-blue-400">
+                        <h3 className="text-lg font-semibold mb-4 text-center text-primary">
                             Category Breakdown
                         </h3>
 
@@ -171,7 +171,7 @@ const Reports = () => {
 
                     {/* Bar Chart */}
                     <div className="bg-white/10 border border-primary-content/20 rounded-2xl p-6 shadow-md backdrop-blur-xl">
-                        <h3 className="text-lg font-semibold mb-4 text-center text-blue-400">
+                        <h3 className="text-lg font-semibold mb-4 text-center text-primary">
                             Monthly Overview
                         </h3>
 

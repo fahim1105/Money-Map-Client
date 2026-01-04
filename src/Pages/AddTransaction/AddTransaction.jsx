@@ -33,7 +33,7 @@ const AddTransaction = () => {
                     Swal.fire({
                         title: "Transaction Added Successfully!",
                         icon: "success",
-                        confirmButtonColor: "#FCE252",
+                        confirmButtonColor: "#4f6900",
                     });
                 }
                 form.reset();
@@ -43,7 +43,7 @@ const AddTransaction = () => {
                     title: "Something went wrong!",
                     text: err.message,
                     icon: "error",
-                    confirmButtonColor: "#FCE252",
+                    confirmButtonColor: "#4f6900",
                 });
             });
     };

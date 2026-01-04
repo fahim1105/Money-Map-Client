@@ -47,7 +47,7 @@ const Footer = () => {
               title: "Subscribed!",
               text: "Thanks for joining our web-app.",
               icon: "success",
-              confirmButtonColor: "#2c54f5",
+              confirmButtonColor: "#4f6900",
             });
           }}
           className="w-full md:w-[50%]"
@@ -119,6 +119,11 @@ const Footer = () => {
               </Link>
             </li>
             <li>
+              <Link to="blogs">
+                Blogs
+              </Link>
+            </li>
+            <li>
               <Link to="/#faq">
                 FAQ
               </Link>
@@ -169,10 +174,10 @@ const Footer = () => {
       </div>
 
       {/* Bottom Line */}
-      <div className="border-t border-black py-4 text-center text-sm text-base-100">
+      <div className="border-t border-black py-4 text-center text-sm text-black">
         © {new Date().getFullYear()} Money Map — All rights reserved.
       </div>
-      <div className="border-t border-black py-2 text-center text-sm text-base-100">
+      <div className="border-t border-black py-2 text-center text-sm text-black">
         App Version: v2.1.2
       </div>
     </footer>

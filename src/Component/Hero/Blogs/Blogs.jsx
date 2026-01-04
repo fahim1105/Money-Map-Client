@@ -1,84 +1,127 @@
-import React from 'react';
-import { Calendar, Clock, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { FaCalendarAlt, FaUser, FaTimes } from 'react-icons/fa';
+import UseAxiosPublic from '../../../Hooks/UseAxiosPublic';
+import Loader from '../../Loader/Loader';
 
 const Blogs = () => {
-    const blogs = [
-        {
-            title: "10 Simple Ways to Save Money Daily",
-            excerpt: "Small changes in your daily routine can lead to significant long-term savings. Learn how to optimize your spending...",
-            date: "Oct 24, 2023",
-            readTime: "5 min read",
-            category: "Savings",
-        },
-        {
-            title: "Understanding Your Cash Flow",
-            excerpt: "Mastering the art of tracking income versus expenses is the first step toward true financial independence.",
-            date: "Oct 20, 2023",
-            readTime: "7 min read",
-            category: "Financial Literacy",
-        },
-        {
-            title: "The Power of Budgeting Apps",
-            excerpt: "Why digital tracking is superior to traditional pen-and-paper methods for modern expense management.",
-            date: "Oct 15, 2023",
-            readTime: "4 min read",
-            category: "Technology",
-        },
-    ];
+    const axiosPublic = UseAxiosPublic();
+    
+    // মোডালের জন্য স্টেট ডিক্লেয়ার করা হয়েছে
+    const [selectedBlog, setSelectedBlog] = useState(null);
+
+    const { data: blogs = [], isLoading } = useQuery({
+        queryKey: ['blogs'],
+        queryFn: async () => {
+            const res = await axiosPublic.get('/blogs');
+            return res.data;
+        }
+    });
+
+    if (isLoading) return <Loader />;
 
     return (
-        <section className="my-20 w-11/12 mx-auto">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-                <div>
-                    <h2 className="text-3xl font-bold text-gray-900 tracking-tight">
-                        Financial Insights & News
-                    </h2>
-                    <p className="text-gray-500 mt-2">Expert advice to help you manage your wealth better.</p>
-                </div>
-                <button className="flex items-center gap-2 text-sm font-bold text-gray-900 hover:gap-3 transition-all">
-                    View All Articles <ArrowRight size={18} />
-                </button>
+        <div className="p-6 lg:p-10 max-w-7xl mx-auto">
+            {/* header section*/}
+            <div className="mb-10 text-center">
+                <h2 className="text-4xl font-bold text-neutral">Financial <span className="text-secondary">Insights</span></h2>
+                <p className="text-white mt-2">Master your money with our expert financial tips.</p>
             </div>
 
+            {/* Blog section */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {blogs.map((blog, index) => (
-                    <article
-                        key={index}
-                        className="flex flex-col bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300"
-                    >
-                        {/* Placeholder for Blog Image - Keeps the theme neutral */}
-                        <div className="h-48 bg-gray-100 flex items-center justify-center">
-                            <span className="text-gray-400 font-medium">Article Preview</span>
-                        </div>
-
-                        <div className="p-6 flex flex-col flex-grow">
-                            <div className="flex items-center gap-4 mb-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                <span className="px-2 py-1 bg-gray-100 rounded text-gray-700">{blog.category}</span>
+                {blogs.map((blog) => (
+                    <div key={blog._id} className="group bg-base-100 rounded-[2.5rem] overflow-hidden shadow-xl border border-base-300 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                        <figure className="relative h-52 overflow-hidden">
+                            <img
+                                src={blog.image}
+                                alt="Blog"
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            />
+                            <div className="absolute top-4 left-4">
+                                <span className="badge badge-primary font-bold px-4 py-3">{blog.category || "Finance"}</span>
                             </div>
+                        </figure>
 
-                            <h3 className="text-xl font-bold text-gray-900 mb-3 leading-snug hover:text-gray-700 cursor-pointer">
+                        <div className="p-6">
+                            <div className="flex items-center gap-4 text-xs text-gray-400 mb-4 font-bold uppercase tracking-widest">
+                                <span className="flex items-center gap-1"><FaCalendarAlt className="text-primary" /> {new Date(blog.createdAt).toLocaleDateString()}</span>
+                                <span className="flex items-center gap-1"><FaUser className="text-primary" /> Admin</span>
+                            </div>
+                            <h3 className="text-xl font-bold text-neutral mb-3 line-clamp-2 group-hover:text-primary transition-colors">
                                 {blog.title}
                             </h3>
-
-                            <p className="text-gray-600 text-sm line-clamp-3 mb-6">
-                                {blog.excerpt}
+                            <p className="text-gray-500 text-sm line-clamp-3 mb-6">
+                                {blog.description}
                             </p>
-
-                            <div className="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between text-gray-500 text-xs">
-                                <div className="flex items-center gap-1">
-                                    <Calendar size={14} />
-                                    <span>{blog.date}</span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                    <Clock size={14} />
-                                    <span>{blog.readTime}</span>
-                                </div>
-                            </div>
+                            
+                            {/* বাটন ক্লিক করলে selectedBlog স্টেট আপডেট হবে */}
+                            <button 
+                                onClick={() => setSelectedBlog(blog)}
+                                className="btn btn-secondary text-base-100 btn-sm rounded-lg"
+                            >
+                                Read More
+                            </button>
                         </div>
-                    </article>
+                    </div>
                 ))}
             </div>
-        </section>
+
+            {/* --- DaisyUI MODAL Section --- */}
+            {selectedBlog && (
+                <div className="modal modal-open modal-bottom sm:modal-middle transition-all duration-300">
+                    <div className="modal-box max-w-3xl rounded-[2.5rem] p-0 overflow-hidden bg-base-100 border border-base-300 shadow-2xl relative">
+                        
+                        {/* modal close button */}
+                        <button 
+                            onClick={() => setSelectedBlog(null)}
+                            className="btn btn-circle btn-sm absolute top-4 right-4 z-50 bg-black/50 border-none text-white hover:bg-black"
+                        >
+                            <FaTimes />
+                        </button>
+
+                        <div className="h-64 md:h-80 w-full">
+                            <img 
+                                src={selectedBlog.image} 
+                                className="w-full h-full object-cover" 
+                                alt="blog view" 
+                            />
+                        </div>
+
+                        <div className="p-8">
+                            <div className="flex items-center gap-4 mb-4">
+                                <span className="badge badge-primary font-bold">{selectedBlog.category}</span>
+                                <span className="text-sm text-gray-400 font-medium italic">
+                                    Date: {new Date(selectedBlog.createdAt).toLocaleDateString()}
+                                </span>
+                            </div>
+                            
+                            <h3 className="text-3xl font-black text-neutral leading-tight mb-6">
+                                {selectedBlog.title}
+                            </h3>
+                            
+                            <div className="divider"></div>
+                            
+                            <div className="max-h-64 overflow-y-auto pr-2 text-gray-600 leading-relaxed whitespace-pre-line">
+                                {selectedBlog.description}
+                            </div>
+
+                            <div className="modal-action mt-8">
+                                <button 
+                                    onClick={() => setSelectedBlog(null)}
+                                    className="btn btn-neutral rounded-xl px-8"
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* close modal if click out side of modal */}
+                    <div className="modal-backdrop bg-black/60" onClick={() => setSelectedBlog(null)}></div>
+                </div>
+            )}
+        </div>
     );
 };
 

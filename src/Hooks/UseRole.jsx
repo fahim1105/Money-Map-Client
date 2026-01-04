@@ -14,7 +14,7 @@ const UseRole = () => {
         queryFn: async () => {
             const res = await axiosSecure.get(`/users/${user.email}/role`)
             console.log("In the use role", res.data)
-            return res.data?.role || 'student';
+            return res.data?.role ;
         }
     })
     return { role, roleLoading };

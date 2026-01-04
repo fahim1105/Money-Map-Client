@@ -19,7 +19,14 @@ const Navbar = () => {
   const handleLogout = () => {
     signOutUser()
       .then(() => {
-        toast.success("Logout Successful");
+        toast.success("Logout Successful",
+          {
+            iconTheme: {
+              primary: '#4f6900',
+              secondary: '#000',
+            }
+          }
+        );
         setMobileMenu(false);
       })
       .catch((err) => console.log(err));
@@ -41,6 +48,7 @@ const Navbar = () => {
     <>
       <NavLink to="/" className={linkClasses}>Home</NavLink>
       <NavLink to="/add-transition" className={linkClasses}>Add Transaction</NavLink>
+      <NavLink to="/blogs" className={linkClasses}>Blogs</NavLink>
       {/* <NavLink to="/reports" className={linkClasses}>Reports</NavLink> */}
       {/* {user && (
         <NavLink to="/my-transition" className={linkClasses}>My Transactions</NavLink>
@@ -179,6 +187,7 @@ const Navbar = () => {
                 {/* Reusing DesktopLinks but they will stack vertically due to flex-col */}
                 <NavLink to="/" onClick={() => setMobileMenu(false)} className={linkClasses}>Home</NavLink>
                 <NavLink to="/add-transition" onClick={() => setMobileMenu(false)} className={linkClasses}>Add Transaction</NavLink>
+                <NavLink to="/blogs" className={linkClasses}>Blogs</NavLink>
                 {/* <NavLink to="/reports" onClick={() => setMobileMenu(false)} className={linkClasses}>Reports</NavLink>
                 {user && (
                   <NavLink to="/my-transition" onClick={() => setMobileMenu(false)} className={linkClasses}>My Transactions</NavLink>

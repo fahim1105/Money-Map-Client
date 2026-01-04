@@ -11,7 +11,6 @@ import AddTransaction from '../Pages/AddTransaction/AddTransaction';
 import Reports from '../Pages/Reports/Reports';
 import PrivetRoute from './PrivetRoutes';
 import PersonalTransaction from '../Pages/PersonalTransaction/PersonalTransaction';
-import Profile from '../Pages/Profile/Profile';
 import TransactionDetails from '../Pages/TransactionDetails/TransactionDetails';
 import AboutUs from '../Pages/AboutUs/AboutUs';
 import Careers from '../Pages/Careers/Careers';
@@ -21,6 +20,9 @@ import Documentation from '../Pages/Documentation/Documentation';
 import DashboardLayout from '../Layout/DashboardLayout/DashboardLayout';
 import ManageUsers from '../Pages/ManageUsers/ManageUser';
 import UserProfile from '../Pages/UserProfile/UserProfile';
+import Blogs from '../Component/Hero/Blogs/Blogs';
+import AdminRoutes from './AdminRoutes';
+import ManageBlogs from '../Pages/ManageBlogs/ManageBlogs';
 
 export const router = createBrowserRouter([
     {
@@ -36,23 +38,15 @@ export const router = createBrowserRouter([
                 path: "/add-transition",
                 element: <PrivetRoute><AddTransaction></AddTransaction></PrivetRoute>
             },
-            // {
-            //     path: "/my-transition",
-            //     element: <PrivetRoute><PersonalTransaction></PersonalTransaction></PrivetRoute>
-            // },
             {
                 path: "/transaction-details/:id",
                 loader: ({ params }) => fetch(`https://money-map-server.vercel.app/transactions/${params.id}`),
                 element: <PrivetRoute><TransactionDetails></TransactionDetails></PrivetRoute>
             },
-            // {
-            //     path: "/reports",
-            //     element: <PrivetRoute><Reports></Reports></PrivetRoute>
-            // },
-            // {
-            //     path: "/my-profile",
-            //     element: <PrivetRoute><Profile></Profile></PrivetRoute>
-            // },
+            {
+                path:"/blogs",
+                Component:Blogs
+            },
             {
                 path: "/about-us",
                 Component: AboutUs
@@ -95,24 +89,24 @@ export const router = createBrowserRouter([
         element: <PrivetRoute><DashboardLayout></DashboardLayout></PrivetRoute>,
         children: [
             {
-                index:true,
-                Component:Reports
+                index: true,
+                Component: Reports
             },
             {
-                path:"my-transitions",
-                Component:PersonalTransaction
-            },
-            // {
-            //     path:"my-profile",
-            //     Component:Profile
-            // },
-            {
-                path:"my-profile",
-                Component:UserProfile
+                path: "my-transitions",
+                Component: PersonalTransaction
             },
             {
-                path:"manage-users",
-                Component:ManageUsers
+                path: "my-profile",
+                Component: UserProfile
+            },
+            {
+                path: "manage-users",
+                element:<AdminRoutes><ManageUsers></ManageUsers></AdminRoutes>
+            },
+            {
+                path:"manage-blogs",
+                element:<AdminRoutes><ManageBlogs></ManageBlogs></AdminRoutes>
             }
 
         ]

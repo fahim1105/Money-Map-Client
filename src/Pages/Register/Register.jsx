@@ -10,7 +10,7 @@ import { BiHide, BiShow } from "react-icons/bi";
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors }, watch } = useForm();
-    const { registerUser, signInGoogle, updateUserProfile } = use(AuthContext);
+    const { createUser, signInWithGoogle, UpdatedUser } = use(AuthContext);
     const [loading, setLoading] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
@@ -20,6 +20,7 @@ const Register = () => {
 
     const from = location?.state || "/";
     const photoFile = watch("photo");
+
 
     const handleRegister = async (data) => {
         setLoading(true);
@@ -32,33 +33,45 @@ const Register = () => {
             const imgRes = await axios.post(img_API_URL, formData);
             const photoURL = imgRes.data.data.url;
 
-            await registerUser(data.email, data.password);
-            await updateUserProfile({ displayName: data.name, photoURL });
+            await createUser(data.email, data.password);
+            await UpdatedUser({ displayName: data.name, photoURL });
 
             const userInfo = {
                 email: data.email,
                 displayName: data.name,
                 photoURL,
-                role: "user",
+                role: "student",
                 createdAt: new Date(),
             };
 
             await axiosSecure.post("/users", userInfo);
-            toast.success("Welcome! Registration Successful", { id: toastId });
+            toast.success("Welcome! Registration Successful", {
+                id: toastId,
+                iconTheme: {
+                    primary: '#4f6900',
+                    secondary: '#000',
+                }
+            });
             navigate(from, { replace: true });
 
         } catch (error) {
             console.error(error);
-            toast.error(error?.message || "Registration failed!", { id: toastId });
+            toast.error(error?.message || "Registration failed!", {
+                id: toastId,
+                iconTheme: {
+                    primary: '#4f6900',
+                    secondary: '#000',
+                }
+            });
         } finally {
             setLoading(false);
         }
     };
 
-    // --- ফিক্সড গুগল লগইন ফাংশন ---
+    // --- Google Login Function ---
     const handleGoogleLogin = async () => {
         try {
-            const result = await signInGoogle();
+            const result = await signInWithGoogle();
             const user = result?.user;
 
             const userInfo = {
@@ -73,11 +86,25 @@ const Register = () => {
             await axiosSecure.post('/users', userInfo)
                 .catch(err => console.log("User might already exist in DB", err));
 
-            toast.success("Google Login Successful!");
+            toast.success("Google Login Successful!",
+                {
+                    iconTheme: {
+                        primary: '#4f6900',
+                        secondary: '#000',
+                    }
+                }
+            );
             navigate(from, { replace: true });
         } catch (error) {
             console.error("Google Login Error:", error);
-            toast.error(error?.message || "Google Login Failed!");
+            toast.error(error?.message || "Google Login Failed!",
+                {
+                    iconTheme: {
+                        primary: '#4f6900',
+                        secondary: '#000',
+                    }
+                }
+            );
         }
     };
 
@@ -100,7 +127,7 @@ const Register = () => {
                             type="text"
                             {...register("name", { required: "Name is required" })}
                             placeholder="John Doe"
-                            className="w-full px-4 py-2.5 border border-base-300 rounded-xl focus:ring-2 focus:ring-primary placeholder:text-secondary focus:outline-none transition-all"
+                            className="w-full px-4 py-2.5 border border-base-300 bg-base-100 rounded-xl focus:ring-2 focus:ring-primary placeholder:text-secondary focus:outline-none transition-all"
                         />
                         {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
                     </div>
@@ -141,7 +168,7 @@ const Register = () => {
                             type="email"
                             {...register("email", { required: "Email is required" })}
                             placeholder="example@mail.com"
-                            className="w-full px-4 py-2.5 border border-base-200 placeholder:text-secondary rounded-xl focus:ring-2 focus:ring-primary/50 focus:outline-none transition-all"
+                            className="w-full px-4 py-2.5 border bg-base-100 border-base-200 placeholder:text-secondary rounded-xl focus:ring-2 focus:ring-primary/50 focus:outline-none transition-all"
                         />
                         {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
                     </div>
@@ -164,7 +191,7 @@ const Register = () => {
                                     }
                                 })}
                                 placeholder="••••••••"
-                                className="w-full px-4 py-2.5 pr-12 border text-secondary border-base-200 rounded-xl focus:ring-2 focus:ring-primary/40 focus:outline-none transition-all"
+                                className="w-full bg-base-100 px-4 py-2.5 pr-12 border text-secondary border-base-200 rounded-xl focus:ring-2 focus:ring-primary/40 focus:outline-none transition-all"
                             />
 
                             {/* Show / Hide Button */}
@@ -207,7 +234,7 @@ const Register = () => {
                 </div>
 
                 <button
-                    type="button" // Type button দেওয়া হয়েছে যাতে ফর্ম সাবমিট না হয়ে যায়
+                    type="button"
                     onClick={handleGoogleLogin}
                     className="w-full flex items-center justify-center gap-3 bg-white border border-base-200 py-2.5 rounded-xl hover:bg-base-100 transition-all font-medium text-base-300"
                 >

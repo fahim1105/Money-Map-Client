@@ -42,7 +42,7 @@ const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#4f6900",
-            cancelButtonColor: "#000000",
+            cancelButtonColor: "#000",
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
@@ -272,7 +272,7 @@ const TransactionCard = ({ transaction, onUpdate, transactions, setTransactions,
                                 </button>
                                 <button
                                     type="submit"
-                                    className="bg-secondary/70 hover:bg-secondary text-primary-content px-4 py-2 rounded-lg w-full sm:w-auto"
+                                    className="bg-secondary/70 hover:bg-secondary text-primary px-4 py-2 rounded-lg w-full sm:w-auto"
                                 >
                                     Update
                                 </button>

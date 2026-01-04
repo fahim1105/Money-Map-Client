@@ -1,62 +1,96 @@
 import React, { use, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router";
-import toast from "react-hot-toast"; // ১. টোস্ট ইম্পোর্ট
+import toast from "react-hot-toast";
 import { AuthContext } from "../../Provider/AuthContext/AuthContext";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure/UseAxiosSecure";
 import { BiHide, BiShow } from "react-icons/bi";
+import { FaUserShield } from "react-icons/fa"; // অ্যাডমিন আইকন
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
-    // const { signinUser, signInGoogle } = UseAuth();
     const { signInUser, signInWithGoogle } = use(AuthContext)
     const location = useLocation();
     const navigate = useNavigate();
     const axiosSecure = UseAxiosSecure();
     const [showPassword, setShowPassword] = useState(false);
 
-    // রিডাইরেক্ট পাথ নির্ধারণ
     const from = location?.state || '/';
 
-    // ইমেইল-পাসওয়ার্ড লগইন
     const handleLogin = (data) => {
         signInUser(data.email, data.password)
             .then(() => {
-                toast.success("Successfully Logged In!"); // ২. সাকসেস টোস্ট
-                navigate(from, { replace: true }); // ৩. সঠিক পেজে রিডাইরেক্ট
+                toast.success("Successfully Logged In!",
+                    {
+                        iconTheme: {
+                            primary: '#4f6900',
+                            secondary: '#000',
+                        }
+                    }
+                );
+                navigate(from, { replace: true });
             })
             .catch((error) => {
-                console.error(error);
-                toast.error(error?.message || "Invalid Email or Password"); // ৪. এরর টোস্ট
+                toast.error(error?.message || "Invalid Email or Password");
             });
     }
 
-    // গুগল লগইন
+    // --- Admin Login ---
+    const handleAdminLogin = () => {
+        const toastId = toast.loading("Logging in as Admin...");
+        signInUser("admin001@gmail.com", "Admin001$")
+            .then(() => {
+                toast.success("Welcome back, Admin!", {
+                    id: toastId,
+                    iconTheme: {
+                        primary: '#4f6900',
+                        secondary: '#000',
+                    },
+                });
+                navigate(from, { replace: true });
+            })
+            .catch(() => {
+                toast.error("Admin account access failed!", {
+                    id: toastId,
+                    iconTheme: {
+                        primary: '#4f6900',
+                        secondary: '#000',
+                    }
+                });
+            });
+    }
+
     const handleGoogleLogin = () => {
         signInWithGoogle()
             .then((result) => {
-                // toast.success("Successfully Logged In!");
                 const userInfo = {
                     email: result.user.email,
                     displayName: result.user.displayName,
                     photoURL: result.user.photoURL,
                 };
 
-                // ডাটাবেসে ইউজার সেভ করা
                 axiosSecure.post('/users', userInfo)
-                    .then((res) => {
-                        toast.success("Google Login Successful!");
+                    .then(() => {
+                        toast.success("Google Login Successful!",
+                            {
+                                iconTheme: {
+                                    primary: '#4f6900',
+                                    secondary: '#000',
+                                }
+                            }
+                        );
                         navigate(from, { replace: true });
                     })
-                    .catch(err => {
-                        // যদি ইউজার আগে থেকেই থাকে তাও রিডাইরেক্ট হবে
-                        navigate(from, { replace: true });
-                    });
+                    .catch(() => navigate(from, { replace: true }));
 
-            }).catch((error) => {
-                toast.error("Google Login Failed!");
-                console.log(error.message);
-            });
+            }).catch(() => toast.error("Google Login Failed!",
+                {
+                    iconTheme: {
+                        primary: '#4f6900',
+                        secondary: '#000',
+                    }
+                }
+            ));
     }
 
     return (
@@ -68,70 +102,74 @@ const Login = () => {
                 </span></p>
 
                 <form onSubmit={handleSubmit(handleLogin)}>
-                    <fieldset>
-                        <label className="block text-sm font-medium text-base-100 mb-1">Email</label>
-                        <input
-                            type="email"
-                            {...register("email", { required: "Email is required" })}
-                            placeholder="Email"
-                            className="w-full px-3 py-2 mb-1 border text-secondary rounded-lg focus:outline-none focus:ring focus:ring-primary"
-                        />
-                        {errors.email && <p className="text-red-500 text-xs mb-3">{errors.email.message}</p>}
-                        <label className="block text-sm font-medium text-base-100 mb-1">
-                            Password
-                        </label>
-
-                        <div className="relative">
+                    <fieldset className="space-y-3">
+                        <div>
+                            <label className="block text-sm font-medium text-base-100 mb-1">Email</label>
                             <input
-                                type={showPassword ? "text" : "password"}
-                                {...register("password", {
-                                    required: "Password is required",
-                                    minLength: { value: 6, message: "Min 6 characters required" }
-                                })}
-                                placeholder="Password"
-                                className="w-full px-3 py-2 pr-12 mb-1 border rounded-lg text-secondary focus:outline-none focus:ring focus:ring-primary"
+                                type="email"
+                                {...register("email", { required: "Email is required" })}
+                                placeholder="Email"
+                                className="w-full px-3 py-2 border text-secondary rounded-lg focus:outline-none focus:ring focus:ring-primary"
                             />
-
-                            {/* Show / Hide button */}
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-secondary"
-                            >
-                                {showPassword ? <BiHide /> : <BiShow />}
-                            </button>
+                            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
                         </div>
 
-                        {errors.password && (
-                            <p className="text-red-500 text-xs mb-3">
-                                {errors.password.message}
-                            </p>
-                        )}
+                        <div>
+                            <label className="block text-sm font-medium text-base-100 mb-1">Password</label>
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    {...register("password", { required: "Password is required" })}
+                                    placeholder="Password"
+                                    className="w-full px-3 py-2 pr-12 border rounded-lg text-secondary focus:outline-none focus:ring focus:ring-primary"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary"
+                                >
+                                    {showPassword ? <BiHide /> : <BiShow />}
+                                </button>
+                            </div>
+                            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+                        </div>
 
-                        <p className="text-sm text-secondary cursor-pointer mb-4">Forget Password?</p>
-
-                        <button type="submit" className="w-full py-2 rounded-lg bg-secondary/80 font-semibold text-base-100 hover:bg-secondary transition">
+                        <button type="submit" className="w-full py-2.5 rounded-lg bg-secondary/80 font-bold text-base-100 hover:bg-secondary transition shadow-lg shadow-secondary/20">
                             Login
                         </button>
                     </fieldset>
                 </form>
 
-                <Link state={from} to="/auth/register">
-                    <p className="text-sm text-base-100 mt-4">
-                        Don’t have any account? <span className="text-secondary cursor-pointer">Register</span>
-                    </p>
-                </Link>
-
-                <div className="flex items-center gap-2 my-4">
-                    <div className="flex-1 h-px bg-base-100"></div>
-                    <span className="text-base-100 text-sm">Or</span>
-                    <div className="flex-1 h-px bg-base-100"></div>
+                <div className="mt-4">
+                    <Link state={from} to="/auth/register">
+                        <p className="text-sm text-base-100">
+                            Don’t have any account? <span className="text-secondary font-bold hover:underline">Register</span>
+                        </p>
+                    </Link>
                 </div>
 
-                <button onClick={handleGoogleLogin} className="w-full text-black flex items-center justify-center gap-2 py-2 border rounded-lg bg-white transition">
-                    <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" className="w-5 h-5" />
-                    Login with Google
-                </button>
+                <div className="flex items-center gap-2 my-6">
+                    <div className="flex-1 h-px bg-base-100 opacity-20"></div>
+                    <span className="text-base-100 text-xs uppercase font-medium">Or Quick Access</span>
+                    <div className="flex-1 h-px bg-base-100 opacity-20"></div>
+                </div>
+
+                <div className="space-y-3">
+                    {/* Google Login */}
+                    <button onClick={handleGoogleLogin} className="w-full text-black flex items-center justify-center gap-2 py-2 border rounded-xl bg-white hover:bg-gray-50 transition font-medium">
+                        <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" className="w-5 h-5" />
+                        Google Login
+                    </button>
+
+                    {/* Admin Direct Login Button */}
+                    <button
+                        onClick={handleAdminLogin}
+                        className="w-full bg-secondary/80 hover:bg-secondary text-base-100 flex items-center justify-center gap-2 py-2 rounded-xl border border-primary/20 transition shadow-lg"
+                    >
+                        <FaUserShield className="text-primary" />
+                        <span>Login as Admin</span>
+                    </button>
+                </div>
             </div>
         </div>
     );
