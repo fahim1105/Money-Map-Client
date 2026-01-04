@@ -49,10 +49,7 @@ const Navbar = () => {
       <NavLink to="/" className={linkClasses}>Home</NavLink>
       <NavLink to="/add-transition" className={linkClasses}>Add Transaction</NavLink>
       <NavLink to="/blogs" className={linkClasses}>Blogs</NavLink>
-      {/* <NavLink to="/reports" className={linkClasses}>Reports</NavLink> */}
-      {/* {user && (
-        <NavLink to="/my-transition" className={linkClasses}>My Transactions</NavLink>
-      )} */}
+    
       {user && (
         <NavLink to="/dashboard" className={linkClasses}>Dashboard</NavLink>
       )}
